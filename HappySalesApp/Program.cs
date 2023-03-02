@@ -1,6 +1,9 @@
 using HappySalesApp.Data;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace HappySalesApp
 {
@@ -21,6 +24,8 @@ namespace HappySalesApp
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+   
 
 
             builder.Services.AddControllersWithViews();

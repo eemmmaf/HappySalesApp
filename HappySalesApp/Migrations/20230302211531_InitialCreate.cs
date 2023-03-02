@@ -224,21 +224,20 @@ namespace HappySalesApp.Migrations
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    FileName = table.Column<string>(type: "longtext", nullable: false)
+                    ImageName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AltText = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    User_Id = table.Column<int>(type: "int", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "varchar(95)", nullable: true)
+                    User_Id = table.Column<string>(type: "varchar(95)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
+                        name: "FK_Products_AspNetUsers_User_Id",
+                        column: x => x.User_Id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -293,9 +292,9 @@ namespace HappySalesApp.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_IdentityUserId",
+                name: "IX_Products_User_Id",
                 table: "Products",
-                column: "IdentityUserId");
+                column: "User_Id");
         }
 
         /// <inheritdoc />

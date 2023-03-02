@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappySalesApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230228153242_InitialCreate")]
+    [Migration("20230302211531_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -56,12 +56,8 @@ namespace HappySalesApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
+                    b.Property<string>("ImageName")
                         .HasColumnType("longtext");
-
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,14 +67,14 @@ namespace HappySalesApp.Migrations
                         .IsRequired()
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
+                    b.Property<string>("User_Id")
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("IdentityUserId");
+                    b.HasIndex("User_Id");
 
                     b.ToTable("Products");
                 });
@@ -287,13 +283,13 @@ namespace HappySalesApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("IdentityUserId");
+                        .HasForeignKey("User_Id");
 
                     b.Navigation("Category");
 
-                    b.Navigation("IdentityUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

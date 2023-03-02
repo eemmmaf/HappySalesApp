@@ -8,6 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using HappySalesApp.Data;
 using HappySalesApp.Models.HappySales.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Drawing;
+using LazZiya.ImageResize;
 
 namespace HappySalesApp.Controllers
 {
@@ -15,13 +21,23 @@ namespace HappySalesApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        //Thumbnails
+        private readonly int ThumbNailWidth = 350;
+        private readonly int ThumbNailHeight = 350;
+
+        public ProductsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
+            _userManager = userManager;
         }
 
+
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Product product)
         {
             var applicationDbContext = _context.Products.Include(p => p.Category);
             return View(await applicationDbContext.ToListAsync());
@@ -51,27 +67,57 @@ namespace HappySalesApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryName");
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
+        // POST: Products/Create
         //Använder Authorize för att gömma formulär för att lägga till
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,FileName,AltText,CategoryId,User_Id")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ImageFile,ImageName,AltText,CategoryId,User_Id")] Product product)
         {
+            //Definierar wwwRootPath
+            string wwwRootPath = _hostEnvironment.WebRootPath;
             if (ModelState.IsValid)
             {
+                //Kontroll om bild finns eller inte
+                if (product.ImageFile != null)
+                {
+                    //Sparar bilder till wwwroot och i katalogen uploadedimages
+                    string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                    string extension = Path.GetExtension(product.ImageFile.FileName);
+
+                    //Tar bort mellanslag och lägger till datum så att bilderna har unika namn
+                    product.ImageName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+
+                    string path = Path.Combine(wwwRootPath + "/uploadedimages/", fileName);
+
+                    //Lagrar filen
+                    using var fileStream = new FileStream(path, FileMode.Create);
+                    await product.ImageFile.CopyToAsync(fileStream);
+
+                    //Skapar miniatyr
+                    //CreateImages(fileName);
+                }
+
+
+                else
+                {
+                    product.ImageName = null;
+                }
+
+
+
+                var user = await _userManager.GetUserAsync(User);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+
+            ViewBag.CategoryId = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
             return View(product);
         }
 
@@ -128,7 +174,7 @@ namespace HappySalesApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryName", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -169,14 +215,25 @@ namespace HappySalesApp.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        //Skapar miniatyr av bild
+        private void CreateImages(string filename)
+        {
+            //Definierar wwwRootPath
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            using (var img = System.Drawing.Image.FromFile(Path.Combine(wwwRootPath + "/uploadedimages/", filename)))
+            {
+                img.Scale(ThumbNailWidth, ThumbNailHeight).SaveAs(Path.Combine(wwwRootPath + "/smallimages/", "thumb_" + filename));
+            }
         }
     }
 }

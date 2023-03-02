@@ -1,6 +1,7 @@
 ﻿namespace HappySalesApp.Models
 {
     using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -34,17 +35,15 @@
 
 
             //-------- Bild ---------//
-            [Required(ErrorMessage = "Bild måste väljas")]
-            [Display(Name = "Filnamn")]
-            public string? FileName { get; set; }
 
-            [Required(ErrorMessage = "Beskriv bilden kort")]
+            [Display(Name = "Filnamn - Bild")]
+            public string? ImageName { get; set; }
+
             [Display(Name = "Alt-text")]
             public string? AltText { get; set; }
 
             [NotMapped]
-            [Required(ErrorMessage = "Fil måste väljas")]
-            [Display(Name = "Bild")]
+            [DisplayName("Ladda upp fil")]
             public IFormFile? ImageFile { get; set; }
 
 
@@ -55,9 +54,9 @@
 
 
             //---------FK Användare------------//
-            [ForeignKey("User_Id")]
-            public int User_Id { get; set; }
-            public virtual IdentityUser IdentityUser { get; set; }
+            [ForeignKey("User")]
+            public string? User_Id { get; set; }
+            public IdentityUser? User { get; set; }
 
         }
 

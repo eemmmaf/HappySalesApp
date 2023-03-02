@@ -1,8 +1,19 @@
-﻿@{
+﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Category>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<section class="dark-main">
+</section>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>Kategorier</h2>
+
+    @foreach (var item in Model)
+    {
+        @Html.DisplayFor(modelItem => item.CategoryName)
+    }
+
+
 </div>

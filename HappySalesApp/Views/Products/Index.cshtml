@@ -1,14 +1,20 @@
 ﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Product>
+@using HappySalesApp.Areas.Identity.Pages.Account;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Annonser";
 }
 
-<h1>Index</h1>
+<h1>Annonser</h1>
 
+@if (SignInManager.IsSignedIn(User)) { 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Lägg till annons</a>
 </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FileName)
+                @Html.DisplayNameFor(model => model.ImageFile)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AltText)
@@ -49,8 +55,11 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileName)
+                @Html.DisplayFor(modelItem => item.ImageFile)
             </td>
+                <td>
+                    <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="250px" height="250px" />
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AltText)
             </td>
