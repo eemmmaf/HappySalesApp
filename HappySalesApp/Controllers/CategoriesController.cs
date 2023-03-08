@@ -42,6 +42,7 @@ namespace HappySalesApp.Controllers
                 return NotFound();
             }
 
+            
             return View(category);
         }
 

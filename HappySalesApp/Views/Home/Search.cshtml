@@ -1,0 +1,37 @@
+﻿@model IEnumerable<HappySalesApp.ViewModels.ProductsAndCategoriesViewModel>
+
+@{
+    ViewData["Title"] = "Sökresultat";
+}
+
+<section class="dark-main">
+</section>
+
+<div class="main">
+    <h2 id="centered">Search Results</h2>
+    <div class="flex-index">
+        <div class="products">
+            @if (Model.Count() == 0)
+            {
+                <p>No results found.</p>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    if (item.GetType() == typeof(Product))
+                    {
+                        <div class="product">
+                            <a href="@Url.Action("Details", "Products", new { id = item.Id })">
+                                <img src="@item.ImageName" alt="@item.AltText" />
+                                <h3>@item.Name</h3>
+                                <p>@item.Description</p>
+                                <p>@item.Price.ToString("C")</p>
+                            </a>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,60 +1,35 @@
 ﻿@model HappySalesApp.Models.HappySales.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Om annonsen";
 }
+<div class="main">
 
-<h1>Details</h1>
+    <h1>Om annonsen</h1>
+    <div>
+        <a asp-action="Index">Tillbaka till alla annonser</a>
+    </div>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AltText)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AltText)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User_Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User_Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <!--Flexbos med kategorier och produktlistning-->
+    <div class="flex-container">
+        <div class="flex-nav">
+            <img decoding="async" src="@("~/uploadedimages/"+Model.ImageName)" asp-append-version="true" width="500px" height="500px" />
+        </div>
+
+
+
+        <div class="products-flex">
+            <!--Artikel där produkterna skrivs ut-->
+            <div class="details">
+
+                <h3>
+                    @Html.DisplayFor(model => model.Name)
+                </h3>
+                <p>@Html.DisplayFor(model => model.Name)</p>
+                <p>@Html.DisplayFor(model => model.Price)</p>
+                <p>Annonsen skapades: @Html.DisplayFor(model => model.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.LastModifiedDate) </p>
+
+            </div>
+        </div>
+    </div>
 </div>

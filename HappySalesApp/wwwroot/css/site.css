@@ -121,8 +121,23 @@ i {
 /*Startsida*/
 .dark-main {
     background-color: #2F2727;
+    padding: 5rem;
 }
 
+.flex-index {
+    display: flex;
+}
+
+    .flex-index div {
+        border: 1px solid black;
+        max-width: 150px;
+        width: 100%;
+        text-align: center;
+    }
+
+#centered {
+    text-align: center;
+}
 /*Mina sidor*/
 .manage-ul {
     list-style-type: none;
@@ -198,4 +213,60 @@ i {
     color: white;
     background-color: #2F2727;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+/*Alla produkter*/
+.products-flex {
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 1000px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.main h1 {
+    text-align: center;
+}
+
+.flex-nav ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.flex-nav li {
+    margin-top: 2.5rem;
+}
+
+.flex-nav a {
+    font-size: 1.6rem;
+}
+
+.flex-nav {
+    max-width: 200px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.products {
+    max-width: 230px;
+    width: 100%;
+}
+
+    .products:hover {
+        text-decoration: underline;
+    }
+
+    .products h3 {
+        font-size: 2.2rem;
+    }
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Detaljer*/
+.details{
+    max-width: 500px;
+    width: 100%;
 }

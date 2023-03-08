@@ -21,6 +21,7 @@
 
             [Required(ErrorMessage = "Pris måste fyllas i")]
             [Display(Name = "Pris")]
+            [DisplayFormat(DataFormatString = "{0:n2}")]
             public decimal? Price { get; set; }
 
 

@@ -1,0 +1,52 @@
+﻿@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
+
+@{
+    ViewData["Title"] = "Kategori";
+}
+
+<div class="main">
+    <h1>Kategori</h1>
+
+    <!--Flexbos med kategorier och produktlistning-->
+    <div class="flex-container">
+        <div class="flex-nav">
+            <!--Alla kategorier-->
+            <h2>Kategorier</h2>
+            <ul>
+                <li><a asp-controller="Products" asp-action="Index">Alla annonser</a></li>
+                @foreach (var item in Model.Categories)
+                {
+                    <li>
+                        @if (item.CategoryName != null)
+                        {
+                            @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId })
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+
+        <div class="products-flex">
+            @foreach (var item in Model.Products)
+            {
+                <!--Artikel där produkterna skrivs ut-->
+                <div>
+                    <article class="products">
+                        <a asp-action="Details" asp-route-id="@item.Id">
+                            <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" />
+
+                            <h3>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </h3>
+
+                            <p>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </p>
+                        </a>
+                    </article>
+                </div>
+            }
+        </div>
+    </div>
+</div>

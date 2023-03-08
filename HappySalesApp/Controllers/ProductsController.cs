@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Drawing;
 using LazZiya.ImageResize;
+using HappySalesApp.ViewModels;
 
 namespace HappySalesApp.Controllers
 {
@@ -37,11 +38,17 @@ namespace HappySalesApp.Controllers
 
 
         // GET: Products
-        public async Task<IActionResult> Index(Product product)
+        public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var viewModel = new ProductsAndCategoriesViewModel
+            {
+                Products = await _context.Products.ToListAsync(),
+                Categories = await _context.Categories.ToListAsync()
+            };
+
+            return View(viewModel);
         }
+
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -60,6 +67,36 @@ namespace HappySalesApp.Controllers
             }
 
             return View(product);
+        }
+
+        //GET: Products/ProductsByCategory
+        //Hämtar alla produkter utifrån ett visst id
+        public async Task<IActionResult> ProductsByCategory(int? id)
+        {
+            if (id == null || _context.Categories == null)
+            {
+                return NotFound();
+            }
+
+            var products = await (from p in _context.Products
+                                  join c in _context.Categories.Distinct() on p.CategoryId equals c.CategoryId
+                                  where c.CategoryId == id
+                                  select p).ToListAsync();
+
+            var categoryName = await _context.Categories
+                .Where(c => c.CategoryId == id)
+                .Select(c => c.CategoryName)
+                .FirstOrDefaultAsync();
+
+            var categories = await _context.Categories.ToListAsync();
+
+            var viewModel = new ProductsAndCategoriesViewModel
+            {
+                Products = products,
+                Categories = categories
+            };
+
+            return View(viewModel);
         }
 
         // GET: Products/Create
@@ -91,7 +128,7 @@ namespace HappySalesApp.Controllers
                     string extension = Path.GetExtension(product.ImageFile.FileName);
 
                     //Tar bort mellanslag och lägger till datum så att bilderna har unika namn
-                    product.ImageName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+                    product.ImageName = fileName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
 
                     string path = Path.Combine(wwwRootPath + "/uploadedimages/", fileName);
 

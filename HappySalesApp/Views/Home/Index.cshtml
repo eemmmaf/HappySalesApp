@@ -1,19 +1,32 @@
 ﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Category>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Startsida";
 }
 
 <section class="dark-main">
+    <form method="post" action="@Url.Action("Search", "Home")">
+    <input type="text" name="searchTerm" />
+    <select name="searchType">
+        <option value="Products">Products</option>
+        <option value="Categories">Categories</option>
+    </select>
+    <input type="submit" value="Search" />
+</form>
 </section>
 
-<div class="text-center">
-    <h2>Kategorier</h2>
+<div class="main">
+    <h2 id="centered">Kategorier</h2>
+    <div class="flex-index">
+        <ul>
+        
+        @foreach (var item in Model){
+                 <li>
+                  @Html.ActionLink(item.CategoryName, "ProductsByCategory", "Products", new { id = item.CategoryId }, null)
+                </li>
+        }
+        </ul>
+    
 
-    @foreach (var item in Model)
-    {
-        @Html.DisplayFor(modelItem => item.CategoryName)
-    }
-
-
+    </div>
 </div>
