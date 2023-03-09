@@ -1,0 +1,37 @@
+﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Product>
+
+
+@{
+    ViewData["Title"] = "Mina annonser";
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Namn</th>
+            <th>Beskrivning</th>
+            <th>Pris</th>
+            <th>Kategori</th>
+            <th>Publicerad</th>
+            <th>Senast ändrad</th>
+            <th>Bild</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var products in Model)
+        {
+            <tr>
+                <td>@products.Name</td>
+                <td>@products.Description</td>
+                <td>@products.Price</td>
+                <td>@products.CreatedDate</td>
+                <td>@products.LastModifiedDate</td>
+                <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="100px" height="100px" /></td>
+            </tr>
+        }
+    </tbody>
+</table>

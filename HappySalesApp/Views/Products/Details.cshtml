@@ -1,4 +1,8 @@
-﻿@model HappySalesApp.Models.HappySales.Models.Product
+﻿@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
+@using HappySalesApp.Areas.Identity.Pages.Account;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Om annonsen";
@@ -28,6 +32,28 @@
                 <p>@Html.DisplayFor(model => model.Name)</p>
                 <p>@Html.DisplayFor(model => model.Price)</p>
                 <p>Annonsen skapades: @Html.DisplayFor(model => model.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.LastModifiedDate) </p>
+
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+
+
+              
+                <!-- Formulär för att lägga till ett bud -->
+                <form method="post" asp-action="AddBid">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                    <div class="form-group">
+                        <label asp-for="BidAmount">Budbelopp:</label>
+                        <input asp-for="BidAmount" class="form-control" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Lägg bud</button>
+                </form>
+
+                }
 
             </div>
         </div>

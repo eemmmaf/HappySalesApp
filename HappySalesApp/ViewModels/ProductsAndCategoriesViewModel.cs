@@ -6,5 +6,8 @@ namespace HappySalesApp.ViewModels
     {
         public IEnumerable<Product>? Products { get; set; }
         public IEnumerable<Category>? Categories { get; set; }
+
+        public IEnumerable<Bid>? Bids { get; set; }
+        public Dictionary<Category, int> ProductCounts { get; internal set; }
     }
 }

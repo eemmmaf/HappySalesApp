@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Drawing;
 using LazZiya.ImageResize;
 using HappySalesApp.ViewModels;
+using System.Security.Claims;
 
 namespace HappySalesApp.Controllers
 {
@@ -40,10 +41,25 @@ namespace HappySalesApp.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+
+
+            var categories = await _context.Categories.ToListAsync();
+            //Dictionary som räknar antalet produkter per kategori
+            var productCounts = new Dictionary<Category, int>();
+
+            foreach (var categoryItem in categories)
+            {
+                var count = await _context.Products.CountAsync(p => p.CategoryId == categoryItem.CategoryId);
+                productCounts.Add(categoryItem, count);
+            }
+
+
+
             var viewModel = new ProductsAndCategoriesViewModel
             {
                 Products = await _context.Products.ToListAsync(),
-                Categories = await _context.Categories.ToListAsync()
+                Categories = await _context.Categories.ToListAsync(),
+                ProductCounts = productCounts
             };
 
             return View(viewModel);
@@ -61,6 +77,8 @@ namespace HappySalesApp.Controllers
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+
             if (product == null)
             {
                 return NotFound();
@@ -73,27 +91,34 @@ namespace HappySalesApp.Controllers
         //Hämtar alla produkter utifrån ett visst id
         public async Task<IActionResult> ProductsByCategory(int? id)
         {
-            if (id == null || _context.Categories == null)
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
             {
                 return NotFound();
             }
 
-            var products = await (from p in _context.Products
-                                  join c in _context.Categories.Distinct() on p.CategoryId equals c.CategoryId
-                                  where c.CategoryId == id
-                                  select p).ToListAsync();
+            //Sparar kategorinamn och beskrivning i viewbags
+            ViewBag.CategoryName = category.CategoryName;
+            ViewBag.CategoryDescription = category.CategoryDescription;
 
-            var categoryName = await _context.Categories
-                .Where(c => c.CategoryId == id)
-                .Select(c => c.CategoryName)
-                .FirstOrDefaultAsync();
-
+            var products = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
             var categories = await _context.Categories.ToListAsync();
+
+            //Dictionary som räknar antalet produkter per kategori
+            var productCounts = new Dictionary<Category, int>();
+
+            foreach (var categoryItem in categories)
+            {
+                var count = await _context.Products.CountAsync(p => p.CategoryId == categoryItem.CategoryId);
+                productCounts.Add(categoryItem, count);
+            }
 
             var viewModel = new ProductsAndCategoriesViewModel
             {
                 Products = products,
-                Categories = categories
+                Categories = categories,
+                ProductCounts = productCounts
             };
 
             return View(viewModel);
@@ -255,6 +280,21 @@ namespace HappySalesApp.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> ProductsByUser()
+        {
+            // Hämta den inloggade användarens Id
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Hämta produkter som är skapade av den inloggade användaren
+            var products = await _context.Products
+                .Where(p => p.User_Id == userId)
+                .ToListAsync();
+
+            return View(products);
         }
 
         private bool ProductExists(int id)

@@ -3,6 +3,7 @@ using System;
 using HappySalesApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,38 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappySalesApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230309212738_addedCounter")]
+    partial class addedCounter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Bid", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(95)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bid");
-                });
 
             modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Category", b =>
                 {
@@ -298,23 +277,6 @@ namespace HappySalesApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Bid", b =>
-                {
-                    b.HasOne("HappySalesApp.Models.HappySales.Models.Product", "Product")
-                        .WithMany("Bids")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Product", b =>
                 {
                     b.HasOne("HappySalesApp.Models.HappySales.Models.Category", "Category")
@@ -386,11 +348,6 @@ namespace HappySalesApp.Migrations
             modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Category", b =>
                 {
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Product", b =>
-                {
-                    b.Navigation("Bids");
                 });
 #pragma warning restore 612, 618
         }

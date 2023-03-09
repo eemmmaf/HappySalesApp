@@ -59,6 +59,13 @@
             public string? User_Id { get; set; }
             public IdentityUser? User { get; set; }
 
+
+            // Property som har antalet produkter i samma kategori
+            public int ProductCount { get; set; }
+
+            // Navigation property till Bids
+            public List<Bid> Bids { get; set; }
+
         }
 
         //Kategori
@@ -72,6 +79,21 @@
             //Navigation property
             public List<Product>? Product { get; set; }
 
+        }
+
+
+        public class Bid
+        {
+            public int Id { get; set; } // PK
+            public decimal Amount { get; set; }
+            public DateTime CreatedDate { get; } = DateTime.Now;
+            public string? UserId { get; set; }
+            public IdentityUser? User { get; set; }
+
+
+            //--------- FK till produkt -------//
+            public int ProductId { get; set; } // FK
+            public Product? Product { get; set; } // Navigation property
         }
     }
 

@@ -5,47 +5,70 @@
 }
 
 <div class="main">
-    <h1>Kategori</h1>
+    <section class="productsbycategory">
+        <h1>@ViewBag.CategoryName</h1>
+        <p>@ViewBag.CategoryDescription</p>
+    </section>
 
     <!--Flexbos med kategorier och produktlistning-->
     <div class="flex-container">
         <div class="flex-nav">
+
+
             <!--Alla kategorier-->
             <h2>Kategorier</h2>
-            <ul>
+            <ul class="list">
                 <li><a asp-controller="Products" asp-action="Index">Alla annonser</a></li>
                 @foreach (var item in Model.Categories)
                 {
                     <li>
                         @if (item.CategoryName != null)
                         {
-                            @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId })
+                            <div class="flex-list">
+                                <div>
+                                    @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId } )
+                                </div>
+                                <div>
+                                    @Model.ProductCounts[item]
+                                </div>
+                            </div>
+
                         }
+
                     </li>
                 }
+
+
+
             </ul>
         </div>
 
-
+        <!--Skriver ut produkterna-->
         <div class="products-flex">
-            @foreach (var item in Model.Products)
+            @if (Model.Products.Count() > 0)
             {
-                <!--Artikel där produkterna skrivs ut-->
-                <div>
-                    <article class="products">
-                        <a asp-action="Details" asp-route-id="@item.Id">
-                            <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" />
+                @foreach (var item in Model.Products)
+                {
+                    <div>
+                        <article class="products">
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" />
 
-                            <h3>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </h3>
+                                <h3>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </h3>
 
-                            <p>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </p>
-                        </a>
-                    </article>
-                </div>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </p>
+                            </a>
+                        </article>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Det finns inga annonser i denna kategori</p>
             }
         </div>
     </div>

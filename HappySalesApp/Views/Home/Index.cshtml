@@ -4,29 +4,41 @@
     ViewData["Title"] = "Startsida";
 }
 
+<!--Sektion med ett kontaktformulär-->
 <section class="dark-main">
     <form method="post" action="@Url.Action("Search", "Home")">
-    <input type="text" name="searchTerm" />
-    <select name="searchType">
-        <option value="Products">Products</option>
-        <option value="Categories">Categories</option>
-    </select>
-    <input type="submit" value="Search" />
-</form>
+        <label for="searchinfo">Vad söker du?</label>
+        <br />
+        <select name="searchType">
+            <option value="Products">Produkter</option>
+            <option value="Categories">Kategorier</option>
+        </select>
+        <br /><br />
+        <div class="form-flex">
+            <div class="div-form">
+                <input type="text" name="searchTerm" id="searchinfo" />
+            </div>
+        
+                <input type="submit" value="Sök" />
+  
+        </div>
+    </form>
 </section>
 
 <div class="main">
     <h2 id="centered">Kategorier</h2>
     <div class="flex-index">
-        <ul>
         
-        @foreach (var item in Model){
-                 <li>
-                  @Html.ActionLink(item.CategoryName, "ProductsByCategory", "Products", new { id = item.CategoryId }, null)
-                </li>
-        }
-        </ul>
-    
+
+            @foreach (var item in Model)
+            {
+                <div>
+               
+                    @Html.ActionLink(item.CategoryName, "ProductsByCategory", "Products", new { id = item.CategoryId }, null)
+               </div>
+            }
+      
+
 
     </div>
 </div>

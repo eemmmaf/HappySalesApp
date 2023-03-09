@@ -29,12 +29,19 @@
         <div class="flex-nav">
             <!--Alla kategorier-->
             <h2>Kategorier</h2>
-            <ul>
+            <ul class="list">
                 <li><a asp-controller="Products" asp-action="Index">Alla annonser</a></li>
                 @foreach (var item in Model.Categories)
                 {
                     <li>
-                        @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId })
+                    <div class="flex-list">
+                        <div>
+                            @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId } )
+                        </div>
+                        <div>
+                            @Model.ProductCounts[item]
+                        </div>
+                    </div>
                     </li>
                 }
             </ul>

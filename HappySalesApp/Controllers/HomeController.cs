@@ -9,6 +9,7 @@ using HappySalesApp.Data;
 using HappySalesApp.Models.HappySales.Models;
 using HappySalesApp.Models;
 using System.Diagnostics;
+using HappySalesApp.ViewModels;
 
 namespace HappySalesApp.Controllers
 {
@@ -33,29 +34,39 @@ namespace HappySalesApp.Controllers
 
         public async Task<IActionResult> Search(string searchTerm, string searchType)
         {
+
+            var viewModel = new ProductsAndCategoriesViewModel
+            {
+                Products = await _context.Products.ToListAsync(),
+                Categories = await _context.Categories.ToListAsync()
+            };
+
+
             if (string.IsNullOrEmpty(searchTerm))
             {
-                return View("Search");
+                viewModel.Products = await _context.Products.ToListAsync();
+                viewModel.Categories = await _context.Categories.ToListAsync();
             }
 
-            if (searchType == "Products")
+            else if (searchType == "Products")
             {
-                var products = await _context.Products
+                viewModel.Products = await _context.Products
                     .Where(p => p.Name.Contains(searchTerm))
                     .ToListAsync();
-
-                return View("Search", products.ToList());
             }
+
             else if (searchType == "Categories")
             {
-                var categories = await _context.Categories
+                viewModel.Categories = await _context.Categories
                     .Where(c => c.CategoryName.Contains(searchTerm))
                     .ToListAsync();
 
-                return View("Search", categories.ToList());
+                viewModel.Products = await _context.Products
+                    .Where(p => p.Category.CategoryName.Contains(searchTerm))
+                    .ToListAsync();
             }
 
-            return View("Search");
+            return View("Search", viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
