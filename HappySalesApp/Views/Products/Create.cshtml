@@ -2,57 +2,50 @@
 @model HappySalesApp.Models.HappySales.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ny annons";
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" enctype="multipart/form-data" class="login-form">
             
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label"></label><br />
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label"></label><br />
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label"></label><br />
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
             <!--Selectlist med kategorier-->
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                <label asp-for="CategoryId" class="control-label"></label><br />
                 <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
 
             <!--Ladda upp fil-->
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" accept="image/*" />
+                <input asp-for="ImageFile" accept="image/*" /><br />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="AltText" class="control-label"></label>
+                <label asp-for="AltText" class="control-label"></label><br />
                 <input asp-for="AltText" class="form-control" />
                 <span asp-validation-for="AltText" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <input asp-for="User_Id" type="hidden" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
-            </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

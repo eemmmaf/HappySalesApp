@@ -40,16 +40,18 @@
             [Display(Name = "Filnamn - Bild")]
             public string? ImageName { get; set; }
 
-            [Display(Name = "Alt-text")]
+            [Display(Name = "Bildbeskrivning")]
+            [Required(ErrorMessage = "Bilden behöver en kort beskrivning")]
             public string? AltText { get; set; }
 
             [NotMapped]
-            [DisplayName("Ladda upp fil")]
+            [DisplayName("Fil - Bild")]
             public IFormFile? ImageFile { get; set; }
 
 
 
             //---------FK Kategori------------//
+            [DisplayName("Kategori")]
             public int CategoryId { get; set; }
             public Category? Category { get; set; }
 

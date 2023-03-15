@@ -32,6 +32,7 @@
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
                 <input asp-for="ImageFile" accept="image/*" />
+                <br />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
@@ -47,9 +48,6 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input asp-for="User_Id" type="hidden" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
-            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

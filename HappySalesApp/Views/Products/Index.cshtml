@@ -12,21 +12,31 @@
 <div class="main">
 
     <h1>Annonser</h1>
-
     @if (SignInManager.IsSignedIn(User))
     {
-        <p>
-            <a asp-action="Create">Lägg till annons</a>
+        <p id="bold">
+            <a asp-action="Create">Lägg till annons <i class="fa-solid fa-circle-plus"></i></a>
         </p>
 
     }
 
-
-
-
     <!--Flexbos med kategorier och produktlistning-->
     <div class="flex-container">
         <div class="flex-nav">
+            <h2>Sortera</h2>
+            @* Länkar för att ändra sorteringen *@
+            <ul class="sorting-list">
+                <li>
+                    @Html.ActionLink("Namn", "Index", new { sortOrder = ViewBag.NameSort })
+                </li>
+                <li>
+                    @Html.ActionLink("Datum", "Index", new { sortOrder = ViewBag.DateSort })
+                </li>
+                <li>
+                    @Html.ActionLink("Pris", "Index", new { sortOrder = ViewBag.PriceSort })
+                </li>
+            </ul>
+
             <!--Alla kategorier-->
             <h2>Kategorier</h2>
             <ul class="list">
@@ -34,14 +44,14 @@
                 @foreach (var item in Model.Categories)
                 {
                     <li>
-                    <div class="flex-list">
-                        <div>
-                            @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId } )
+                        <div class="flex-list">
+                            <div>
+                                @Html.ActionLink(item.CategoryName, "ProductsByCategory", new { id = item.CategoryId } )
+                            </div>
+                            <div>
+                                @Model.ProductCounts[item]
+                            </div>
                         </div>
-                        <div>
-                            @Model.ProductCounts[item]
-                        </div>
-                    </div>
                     </li>
                 }
             </ul>
@@ -49,26 +59,28 @@
 
 
 
-        <div class="products-flex">
-            @foreach (var item in Model.Products)
-            {
-                <!--Artikel där produkterna skrivs ut-->
-                <div>
-                    <article class="products">
-                        <a asp-action="Details" asp-route-id="@item.Id">
-                            <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" />
+        <div>
+            <div class="products-flex">
+                @foreach (var item in Model.Products)
+                {
+                    <!--Artikel där produkterna skrivs ut-->
+                    <div>
+                        <article class="products">
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" alt="@item.AltText" />
 
-                            <h3>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </h3>
+                                <h3>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </h3>
 
-                            <p>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </p>
-                        </a>
-                    </article>
-                </div>
-            }
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Price) kr
+                                </p>
+                            </a>
+                        </article>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

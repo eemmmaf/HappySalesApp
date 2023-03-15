@@ -1,19 +1,42 @@
-﻿@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 
 @{
     ViewData["Title"] = "Kategori";
 }
 
 <div class="main">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <p id="bold">
+            <a asp-action="Create">Lägg till annons <i class="fa-solid fa-circle-plus"></i></a>
+        </p>
+
+    }
     <section class="productsbycategory">
         <h1>@ViewBag.CategoryName</h1>
         <p>@ViewBag.CategoryDescription</p>
     </section>
 
-    <!--Flexbos med kategorier och produktlistning-->
+    <!--Flexbox med kategorier och produktlistning-->
     <div class="flex-container">
         <div class="flex-nav">
-
+            <h2>Sortera</h2>
+            @* Länkar för att ändra sorteringen *@
+            <ul class="sorting-list">
+                <li>
+                    @Html.ActionLink("Namn", "ProductsByCategory", new { sortOrder = ViewBag.NameSort })
+                </li>
+                <li>
+                    @Html.ActionLink("Datum", "ProductsByCategory", new { sortOrder = ViewBag.DateSort })
+                </li>
+                <li>
+                    @Html.ActionLink("Pris", "ProductsByCategory", new { sortOrder = ViewBag.PriceSort })
+                </li>
+            </ul>
 
             <!--Alla kategorier-->
             <h2>Kategorier</h2>
@@ -34,7 +57,6 @@
                             </div>
 
                         }
-
                     </li>
                 }
 
@@ -43,33 +65,40 @@
             </ul>
         </div>
 
-        <!--Skriver ut produkterna-->
-        <div class="products-flex">
-            @if (Model.Products.Count() > 0)
-            {
-                @foreach (var item in Model.Products)
+
+        <div>
+            <!--Skriver ut produkterna-->
+            <div class="products-flex">
+                <!--Om det finns lagrade annonser i valda kategorin skrivs -->
+                @if (Model.Products.Count() > 0)
                 {
-                    <div>
-                        <article class="products">
-                            <a asp-action="Details" asp-route-id="@item.Id">
-                                <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" />
+                    @foreach (var item in Model.Products)
+                    {
+                        <!--Artikel där produkterna skrivs ut-->
+                        <div>
+                            <article class="products">
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230" height="230" alt="@item.AltText" />
 
-                                <h3>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </h3>
+                                    <h3>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </h3>
 
-                                <p>
-                                    @Html.DisplayFor(modelItem => item.Price)
-                                </p>
-                            </a>
-                        </article>
-                    </div>
+                                    <p>
+                                        @Html.DisplayFor(modelItem => item.Price) kr
+                                    </p>
+                                </a>
+                            </article>
+                        </div>
+                    }
                 }
-            }
-            else
-            {
-                <p>Det finns inga annonser i denna kategori</p>
-            }
+                else
+                {
+                    <p>Det finns inga annonser i denna kategori</p>
+                }
+            </div>
         </div>
+
     </div>
 </div>
+

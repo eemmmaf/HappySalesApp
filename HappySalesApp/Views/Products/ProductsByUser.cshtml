@@ -5,18 +5,15 @@
     ViewData["Title"] = "Mina annonser";
 }
 
-
-<h1>@ViewData["Title"]</h1>
-
+<section class="main">
+    <h1>@ViewData["Title"]</h1>
 <table class="table">
     <thead>
         <tr>
             <th>Namn</th>
             <th>Beskrivning</th>
             <th>Pris</th>
-            <th>Kategori</th>
-            <th>Publicerad</th>
-            <th>Senast ändrad</th>
+            <th>Skapad</th>
             <th>Bild</th>
         </tr>
     </thead>
@@ -29,8 +26,7 @@
                 <td>@products.Description</td>
                 <td>@products.Price</td>
                 <td>@products.CreatedDate</td>
-                <td>@products.LastModifiedDate</td>
-                <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="100px" height="100px" /></td>
+                <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="70px" height="70px" alt="@products.AltText"/></td>
                 <td><a asp-action="Edit" asp-route-id="@products.Id">Ändra</a></td>
                 <td><a asp-action="Delete" asp-route-id="@products.Id">Ta bort</a></td>
                 </tr>
@@ -40,3 +36,4 @@
         }
     </tbody>
 </table>
+</section>

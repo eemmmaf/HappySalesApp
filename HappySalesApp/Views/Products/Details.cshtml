@@ -10,36 +10,37 @@
 <div class="main">
 
     <h1>Om annonsen</h1>
-    <div>
+    <div class="all-ads">
         <a asp-action="Index">Tillbaka till alla annonser</a>
     </div>
 
     <!--Flexbos med kategorier och produktlistning-->
-    <div class="flex-container">
-        <div class="flex-nav">
-            <img decoding="async" src="@("~/uploadedimages/"+Model.Product.ImageName)" asp-append-version="true" width="500px" height="500px" />
+    <div class="details-flex">
+        <div class="flex-img">
+            <img decoding="async" src="@("~/uploadedimages/"+Model.Product.ImageName)" asp-append-version="true" width="450" height="450" alt="@Model.Product.AltText" />
+            <h2>@Html.DisplayFor(model => model.Product.Name)</h2>
+            <p>@Html.DisplayFor(model => model.Product.Description)</p>
+
+
+            <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.Product.LastModifiedDate) </p>
         </div>
 
 
 
-        <div class="products-flex">
+        <div class="details-text">
             <!--Artikel där produkterna skrivs ut-->
             <div class="details">
-
-                <h3>
-                    @Html.DisplayFor(model => model.Product.Name)
-                </h3>
-                <p>@Html.DisplayFor(model => model.Product.Name)</p>
-                <p>@Html.DisplayFor(model => model.Product.Price)</p>
-                <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.Product.LastModifiedDate) </p>
-
-
+                <h3>Utgångspris</h3>
+                <p>@Html.DisplayFor(model => model.Product.Price) kr </p>
+              
                 @if (SignInManager.IsSignedIn(User))
                 {
                     //Skickar med produktens id som parameter i länken
                     <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
 
-                }else{
+                }
+                else
+                {
                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
                 }
 

@@ -17,6 +17,7 @@ using LazZiya.ImageResize;
 using HappySalesApp.ViewModels;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Microsoft.Data.SqlClient;
 
 namespace HappySalesApp.Controllers
 {
@@ -40,8 +41,9 @@ namespace HappySalesApp.Controllers
 
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+
 
 
             var categories = await _context.Categories.ToListAsync();
@@ -55,13 +57,42 @@ namespace HappySalesApp.Controllers
             }
 
 
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
+
+            var productsSort = from s in _context.Products
+                               select s;
+            // Sorteringsalternativ
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.Name.ToUpper());
+                    break;
+                case "Price":
+                    productsSort = productsSort.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.Price);
+                    break;
+                case "Date_asc":
+                    productsSort = productsSort.OrderBy(p => p.CreatedDate);
+                    break;
+                case "date_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.CreatedDate);
+                    break;
+                default:
+                    productsSort = productsSort.OrderBy(p => p.Name.ToUpper());
+                    break;
+            }
 
             var viewModel = new ProductsAndCategoriesViewModel
             {
-                Products = await _context.Products.ToListAsync(),
+                Products = await productsSort.ToListAsync(),
                 Categories = await _context.Categories.ToListAsync(),
                 ProductCounts = productCounts
             };
+
 
             return View(viewModel);
         }
@@ -104,7 +135,7 @@ namespace HappySalesApp.Controllers
 
         //GET: Products/ProductsByCategory
         //Hämtar alla produkter utifrån ett visst id
-        public async Task<IActionResult> ProductsByCategory(int? id)
+        public async Task<IActionResult> ProductsByCategory(int? id, string sortOrder)
         {
             var category = await _context.Categories.FindAsync(id);
 
@@ -129,9 +160,45 @@ namespace HappySalesApp.Controllers
                 productCounts.Add(categoryItem, count);
             }
 
+
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
+
+            var productsSort = from p in _context.Products
+                           where p.CategoryId == id
+                           select p;
+
+
+            // Sorteringsalternativ
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.Name.ToUpper());
+                    break;
+                case "Price":
+                    productsSort = productsSort.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.Price);
+                    break;
+                case "Date_asc":
+                    productsSort = productsSort.OrderBy(p => p.CreatedDate);
+                    break;
+                case "date_desc":
+                    productsSort = productsSort.OrderByDescending(p => p.CreatedDate);
+                    break;
+                default:
+                    productsSort = productsSort.OrderBy(p => p.Name.ToUpper());
+                    break;
+            }
+
+
+
+
             var viewModel = new ProductsAndCategoriesViewModel
             {
-                Products = products,
+                Products = await productsSort.ToListAsync(),
                 Categories = categories,
                 ProductCounts = productCounts
             };
@@ -189,7 +256,9 @@ namespace HappySalesApp.Controllers
 
                
                 product.LastModifiedDate = DateTime.Now;
-                var user = await _userManager.GetUserAsync(User);
+                // Hämta den inloggade användarens Id och lagrar
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                product.User_Id = userId;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -274,6 +343,9 @@ namespace HappySalesApp.Controllers
                     
                 }
 
+                    // Hämta den inloggade användarens Id och lagrar
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    product.User_Id = userId;
                     product.LastModifiedDate = DateTime.Now;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
@@ -290,7 +362,8 @@ namespace HappySalesApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //Redirectar användare till vyn där alla produkter listas
+                return RedirectToAction(nameof(ProductsByUser));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryName", "CategoryName", product.CategoryId);
             return View(product);
@@ -342,7 +415,8 @@ namespace HappySalesApp.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //Redirectar till sidan där alla produkter finns
+            return RedirectToAction(nameof(ProductsByUser));
         }
 
 
@@ -352,9 +426,10 @@ namespace HappySalesApp.Controllers
             // Hämta den inloggade användarens Id
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Hämta produkter som är skapade av den inloggade användaren
+            // Hämta produkter som är skapade av den inloggade användaren och sorterar efter skapat-datum
             var products = await _context.Products
                 .Where(p => p.User_Id == userId)
+                .OrderByDescending(p => p.CreatedDate)
                 .ToListAsync();
 
             return View(products);
