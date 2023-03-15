@@ -69,6 +69,9 @@
             // Navigation property till Bids
             public List<Bid>? Bids { get; set; }
 
+            //Bool för att se om produkten är såld eller inte
+            public bool IsSold { get; set; }
+
         }
 
         //Kategori
@@ -99,6 +102,8 @@
             [DisplayName("Bud lagt")]
             public DateTime CreatedDate { get; set; } 
 
+            //Bool för att bestämma om budet är godkänt eller inte
+            public bool IsApproved { get; set; }
 
             public string? UserId { get; set; }
             public IdentityUser? User { get; set; }

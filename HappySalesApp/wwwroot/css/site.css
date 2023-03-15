@@ -68,7 +68,7 @@ label {
     margin: auto;
 }
 
-img{
+img {
     max-width: 100%;
 }
 
@@ -314,9 +314,9 @@ select {
         text-align: center;
     }
 
-    .main h1 {
-        text-align: center;
-    }
+.main h1 {
+    text-align: center;
+}
 
 .flex-nav ul {
     list-style-type: none;
@@ -351,7 +351,7 @@ select {
         font-weight: normal;
     }
 
-    .products a{
+    .products a {
         font-weight: bold;
         margin-top: 0;
     }
@@ -380,15 +380,20 @@ select {
             padding: 0 4rem;
         }
 
-        #bold{
-            font-weight: bold;
-        }
+#bold {
+    font-weight: bold;
+}
 
 
 /*Detaljer*/
 .details {
     max-width: 500px;
     width: 100%;
+}
+
+.bids-list {
+    list-style-type: none;
+    padding-left: 0;
 }
 
 
@@ -400,7 +405,6 @@ select {
 }
 
 .add-bid {
-
 }
 
     .add-bid a {
@@ -419,10 +423,10 @@ select {
         }
 
 
-    .flex-img {
-        max-width: 500px;
-        width: 100%;
-    }
+.flex-img {
+    max-width: 500px;
+    width: 100%;
+}
 
 .details-flex {
     display: flex;
@@ -481,7 +485,7 @@ select {
     }
 
     .login-form button,
-    .login-form input[type="submit"]{
+    .login-form input[type="submit"] {
         margin: 2rem 0;
         padding: 1rem 0.5rem;
         font-size: 1.6rem;
@@ -495,17 +499,17 @@ select {
     }
 
         .login-form button:hover,
-        .login-form input[type="submit"]:hover{
+        .login-form input[type="submit"]:hover {
             background-color: #3e0120;
         }
 
-    .login-form div{
+    .login-form div {
         margin-top: 1rem;
     }
 
-    .list-user {
-        margin-top: 4rem;
-    }
+.list-user {
+    margin-top: 4rem;
+}
 
 .text-danger {
     font-size: 1.6rem;
@@ -522,41 +526,41 @@ table {
     font-size: 1.6rem;
 }
 
-tr{
+tr {
     border-bottom: 1px solid #6B0037;
 }
 
-.td-delete{
+.td-delete {
     background-color: #460101;
 }
 
-    .td-delete a{
+    .td-delete a {
         color: white;
     }
 
-    td a:hover{
-        font-weight: bold;
-    }
+td a:hover {
+    font-weight: bold;
+}
 
-    tr:hover{
-        background-color: #fdf8ff;
-    }
-    /*Ta bort*/
-    .delete {
-        max-width: 600px;
-        width: 100%;
-        margin: auto;
-        display: block;
-        font-family: 'Manrope', sans-serif;
-        font-size: 1.6rem;
-    }
+tr:hover {
+    background-color: #fdf8ff;
+}
+/*Ta bort*/
+.delete {
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.6rem;
+}
 
-.btn-danger{
+.btn-danger {
     background-color: #460101;
     color: white;
 }
 
-dt{
+dt {
     font-weight: bold;
 }
 

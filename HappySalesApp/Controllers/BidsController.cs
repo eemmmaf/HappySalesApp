@@ -163,6 +163,37 @@ namespace HappySalesApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        //Metod för att acceptera bud
+        [HttpPost]
+        public async Task<IActionResult> AcceptBid(int bidId)
+        {
+            var bid = await _context.Bid.FindAsync(bidId);
+            if (bid == null)
+            {
+                return NotFound();
+            }
+
+            bid.IsApproved = true;
+            await _context.SaveChangesAsync();
+
+            var productId = bid.ProductId;
+
+            // Hämta produkten som är kopplad till budet
+            var product = await _context.Products.FindAsync(productId);
+            if (product != null)
+            {
+                // Sätt IsSold till true 
+                product.IsSold = true;
+                await _context.SaveChangesAsync();
+            }
+
+            // Redirectar till produkt-sidan
+            return RedirectToAction("Details", "Products", new { id = product.Id });
+        }
+
+
+
         private bool BidExists(int id)
         {
             return (_context.Bid?.Any(e => e.BidId == id)).GetValueOrDefault();

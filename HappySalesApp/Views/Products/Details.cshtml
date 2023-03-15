@@ -63,20 +63,39 @@
 
 
                 <h2>Bud</h2>
-                <!--Kontroll om det finns något bud och skriver ut-->
-                @if (Model.Bids.Any())
-                {
-                    <!--Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor-->
-                    @foreach (var bid in Model.Bids)
+                <!-- Kontroll om det finns något bud och skriver ut -->
+                <ul class="bids-list">
+                    @if (Model.Bids.Any())
                     {
-                        <p>@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</p>
-                    }
-                }
-                else
-                {
-                    <p>Denna produkt har inget bud</p>
-                }
+                        <!-- Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor -->
+                        @foreach (var bid in Model.Bids)
+                        {
+                            <!-- Kollar om annonsen har sålts -->
+                            @if (bid.IsApproved)
+                            {
+                                <li>Denna annons har blivit såld</li>
+                            }
+                            else
+                            {
+                                <!-- Skriver ut buden -->
+                                <li>@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</li>
 
+                                <!-- Om användaren är inloggad och inte är den som har lagt budet och budet inte har godkänts, visas en knapp för att godkänna budet -->
+                                @if (User.Identity.IsAuthenticated && bid.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) && bid.IsApproved == false)
+                                {
+                                    <form asp-controller="Bids" asp-action="AcceptBid" method="post">
+                                        <input type="hidden" name="bidId" value="@bid.BidId" />
+                                        <button type="submit">Godkänn</button>
+                                    </form>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <li>Denna produkt har inget bud</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>

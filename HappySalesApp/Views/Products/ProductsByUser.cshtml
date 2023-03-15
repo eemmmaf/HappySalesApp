@@ -14,6 +14,7 @@
                 <th>Pris</th>
                 <th>Skapad</th>
                 <th>Bild</th>
+                <th>Status</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,6 +28,13 @@
                         <td>@products.Price</td>
                         <td>@products.CreatedDate</td>
                         <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="70px" height="70px" alt="@products.AltText" /></td>
+                       @if(products.IsSold == true){
+                            <td>Såld</td>
+                        }
+                        else
+                        {
+                            <td>Inte såld</td>
+                        }
                         <td><a asp-action="Edit" asp-route-id="@products.Id">Ändra</a></td>
                         <td><a asp-action="Details" asp-route-id="@products.Id">Detaljer</a></td>
                         <td class="td-delete"><a asp-action="Delete" asp-route-id="@products.Id">Ta bort</a></td>
