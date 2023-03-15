@@ -28,10 +28,10 @@
             //------- Datum ------------//
 
             [Display(Name = "Publicerad")]
-            public DateTime? CreatedDate { get; } = DateTime.Now;
+            public DateTime? CreatedDate { get; set; } = DateTime.Now;
 
             [Display(Name = "Senast ändrad")]
-            public DateTime? LastModifiedDate { get; } = DateTime.Now;
+            public DateTime? LastModifiedDate { get; set; } = DateTime.Now;
 
 
 
@@ -61,10 +61,11 @@
 
 
             // Property som har antalet produkter i samma kategori
+            [NotMapped]
             public int ProductCount { get; set; }
 
             // Navigation property till Bids
-            public List<Bid> Bids { get; set; }
+            public List<Bid>? Bids { get; set; }
 
         }
 
@@ -84,9 +85,16 @@
 
         public class Bid
         {
-            public int Id { get; set; } // PK
+            [Key]
+            public int BidId { get; set; } // PK
+
+         
+            [Required(ErrorMessage = "Bud måste fyllas i")]
+            [Range(0.01, double.MaxValue, ErrorMessage = "Budet måste vara mer än 0")]
             public decimal Amount { get; set; }
-            public DateTime CreatedDate { get; } = DateTime.Now;
+            public DateTime CreatedDate { get; set; } 
+
+
             public string? UserId { get; set; }
             public IdentityUser? User { get; set; }
 

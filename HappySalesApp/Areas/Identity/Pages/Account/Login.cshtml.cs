@@ -64,7 +64,7 @@ namespace HappySalesApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Email måste fyllas i")]
             [EmailAddress]
             public string Email { get; set; }
 
@@ -72,7 +72,8 @@ namespace HappySalesApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Lösenord måste fyllas i")]
+            [Display(Name = "Lösenord")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -80,7 +81,7 @@ namespace HappySalesApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Spara inloggningsuppgifter")]
             public bool RememberMe { get; set; }
         }
 

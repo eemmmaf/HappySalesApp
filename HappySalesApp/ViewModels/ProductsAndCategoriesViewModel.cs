@@ -4,6 +4,8 @@ namespace HappySalesApp.ViewModels
 {
     public class ProductsAndCategoriesViewModel
     {
+
+        public Product Product { get; set; }
         public IEnumerable<Product>? Products { get; set; }
         public IEnumerable<Category>? Categories { get; set; }
 

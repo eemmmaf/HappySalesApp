@@ -17,7 +17,7 @@
     <!--Flexbos med kategorier och produktlistning-->
     <div class="flex-container">
         <div class="flex-nav">
-            <img decoding="async" src="@("~/uploadedimages/"+Model.ImageName)" asp-append-version="true" width="500px" height="500px" />
+            <img decoding="async" src="@("~/uploadedimages/"+Model.Product.ImageName)" asp-append-version="true" width="500px" height="500px" />
         </div>
 
 
@@ -27,32 +27,35 @@
             <div class="details">
 
                 <h3>
-                    @Html.DisplayFor(model => model.Name)
+                    @Html.DisplayFor(model => model.Product.Name)
                 </h3>
-                <p>@Html.DisplayFor(model => model.Name)</p>
-                <p>@Html.DisplayFor(model => model.Price)</p>
-                <p>Annonsen skapades: @Html.DisplayFor(model => model.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.LastModifiedDate) </p>
+                <p>@Html.DisplayFor(model => model.Product.Name)</p>
+                <p>@Html.DisplayFor(model => model.Product.Price)</p>
+                <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.Product.LastModifiedDate) </p>
 
 
                 @if (SignInManager.IsSignedIn(User))
                 {
+                    //Skickar med produktens id som parameter i länken
+                    <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
 
+                }else{
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
+                }
 
-              
-                <!-- Formulär för att lägga till ett bud -->
-                <form method="post" asp-action="AddBid">
-                    @Html.AntiForgeryToken()
-
-                    <input type="hidden" name="ProductId" value="@Model.Id" />
-
-                    <div class="form-group">
-                        <label asp-for="BidAmount">Budbelopp:</label>
-                        <input asp-for="BidAmount" class="form-control" required />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Lägg bud</button>
-                </form>
-
+                <h2>Bud</h2>
+                <!--Kontroll om det finns något bud och skriver ut-->
+                @if (Model.Bids.Any())
+                {
+                    <!--Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor-->
+                    @foreach (var bid in Model.Bids)
+                    {
+                        <p>@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</p>
+                    }
+                }
+                else
+                {
+                    <p>Denna produkt har inget bud</p>
                 }
 
             </div>

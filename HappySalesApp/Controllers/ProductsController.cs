@@ -16,6 +16,7 @@ using System.Drawing;
 using LazZiya.ImageResize;
 using HappySalesApp.ViewModels;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace HappySalesApp.Controllers
 {
@@ -69,7 +70,9 @@ namespace HappySalesApp.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Products == null)
+
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -78,13 +81,25 @@ namespace HappySalesApp.Controllers
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-
             if (product == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            // Hämta alla bud för den här produkten
+            var bids = await _context.Bid
+                .Where(b => b.ProductId == product.Id)
+                .OrderByDescending(b => b.Amount)
+                .ToListAsync();
+
+            // Lägg till produkten och buden till modellen för vyn
+            var model = new ProductsAndCategoriesViewModel
+            {
+                Product = product,
+                Bids = bids
+            };
+
+            return View(model);
         }
 
         //GET: Products/ProductsByCategory
@@ -172,7 +187,8 @@ namespace HappySalesApp.Controllers
                 }
 
 
-
+               
+                product.LastModifiedDate = DateTime.Now;
                 var user = await _userManager.GetUserAsync(User);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -198,7 +214,7 @@ namespace HappySalesApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -209,20 +225,60 @@ namespace HappySalesApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,FileName,AltText,CategoryId,User_Id")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,ImageFile,ImageName,AltText,CategoryId,User_Id")] Product product)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
+
+            //Definierar wwwRootPath
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //Kontroll om bild finns eller inte
+                    if (product.ImageFile != null)
+                    {
+                        //Sparar bilder till wwwroot och i katalogen uploadedimages
+                        string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                        string extension = Path.GetExtension(product.ImageFile.FileName);
+
+                        //Tar bort mellanslag och lägger till datum så att bilderna har unika namn
+                        product.ImageName = fileName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+
+                        string path = Path.Combine(wwwRootPath + "/uploadedimages/", fileName);
+
+                        //Lagrar filen
+                        using var fileStream = new FileStream(path, FileMode.Create);
+                        await product.ImageFile.CopyToAsync(fileStream);
+
+                        //Skapar miniatyr
+                        //CreateImages(fileName);
+                    }
+                    else
+                    {
+                        // Använder den tidigare sparade bilden om det finns en
+                        var previousProduct = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+                        if (previousProduct.ImageName != null)
+                        {
+                            product.ImageName = previousProduct.ImageName;
+                        }
+                        else
+                        {
+                            product.ImageName = null;
+                        }
+                    
+                }
+
+                    product.LastModifiedDate = DateTime.Now;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
+
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProductExists(product.Id))
@@ -241,7 +297,7 @@ namespace HappySalesApp.Controllers
         }
 
         // GET: Products/Delete/5
-        //Använder Authorize för att gömma formulär för att lägga till
+        //Använder Authorize för att gömma för oinloggade
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -268,6 +324,9 @@ namespace HappySalesApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //Definierar wwwRootPath
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+
             if (_context.Products == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
@@ -275,6 +334,10 @@ namespace HappySalesApp.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
+                //Tar bort bild
+                var imagePath = Path.Combine(wwwRootPath + "/uploadedimages/" + product.ImageName);
+                if (System.IO.File.Exists(imagePath))
+                    System.IO.File.Delete(imagePath);
                 _context.Products.Remove(product);
             }
 

@@ -21,12 +21,15 @@ namespace HappySalesApp.Migrations
 
             modelBuilder.Entity("HappySalesApp.Models.HappySales.Models.Bid", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BidId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -34,7 +37,7 @@ namespace HappySalesApp.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(95)");
 
-                    b.HasKey("Id");
+                    b.HasKey("BidId");
 
                     b.HasIndex("ProductId");
 
@@ -72,12 +75,18 @@ namespace HappySalesApp.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -86,9 +95,6 @@ namespace HappySalesApp.Migrations
                     b.Property<decimal?>("Price")
                         .IsRequired()
                         .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("ProductCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("User_Id")
                         .HasColumnType("varchar(95)");

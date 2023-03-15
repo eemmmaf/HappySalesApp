@@ -7,23 +7,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HappySalesApp.Data;
 using HappySalesApp.Models.HappySales.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis;
 
 namespace HappySalesApp.Controllers
 {
     public class BidsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BidsController(ApplicationDbContext context)
+        public BidsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Bids
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Bid.Include(b => b.Product).Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
+            // Hämta den inloggade användarens Id
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Hämta alla bud som har samma användar-id som den inloggade användaren
+            var bids = await _context.Bid
+                .Include(b => b.Product)
+                .Include(b => b.User)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
+
+            return View(bids);
         }
 
         // GET: Bids/Details/5
@@ -37,7 +52,7 @@ namespace HappySalesApp.Controllers
             var bid = await _context.Bid
                 .Include(b => b.Product)
                 .Include(b => b.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.BidId == id);
             if (bid == null)
             {
                 return NotFound();
@@ -47,29 +62,51 @@ namespace HappySalesApp.Controllers
         }
 
         // GET: Bids/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            // Här kan du hämta användarens ID från din autentiseringslogik
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Sätt ViewBag med användarens ID och produktens ID
+            ViewBag.UserId = userId;
+            ViewBag.ProductId = id;
+
             return View();
         }
 
         // POST: Bids/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Metod för att lägga till bud
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Amount,UserId,ProductId")] Bid bid)
+        public async Task<IActionResult> Create(Bid bid)
         {
             if (ModelState.IsValid)
             {
+                // Lägg till produktens ID och användarens ID till budet
+                bid.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                // Kontrollera att värdet för "id" är en giltig heltalssträng
+                if (int.TryParse(Request.Form["ProductId"], out int productId))
+                {
+                    // Tilldela produkt-ID:t till budet
+                    bid.ProductId = productId;
+                }
+
+                // Sätt CreatedDate till nuvarande tidpunkt
+                bid.CreatedDate = DateTime.Now;
+
+                // Lägg till budet i databasen och redirectar tillbaka användaren
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Products", new { id = bid.ProductId });
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", bid.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bid.UserId);
-            return View(bid);
+            else
+            {
+                // Hantera felaktig productId i Query-stringen
+                return BadRequest("Invalid productId");
+            }
+
         }
 
         // GET: Bids/Edit/5
@@ -97,7 +134,7 @@ namespace HappySalesApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Amount,UserId,ProductId")] Bid bid)
         {
-            if (id != bid.Id)
+            if (id != bid.BidId)
             {
                 return NotFound();
             }
@@ -111,7 +148,7 @@ namespace HappySalesApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BidExists(bid.Id))
+                    if (!BidExists(bid.BidId))
                     {
                         return NotFound();
                     }
@@ -138,7 +175,7 @@ namespace HappySalesApp.Controllers
             var bid = await _context.Bid
                 .Include(b => b.Product)
                 .Include(b => b.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.BidId == id);
             if (bid == null)
             {
                 return NotFound();
@@ -161,14 +198,14 @@ namespace HappySalesApp.Controllers
             {
                 _context.Bid.Remove(bid);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BidExists(int id)
         {
-          return (_context.Bid?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Bid?.Any(e => e.BidId == id)).GetValueOrDefault();
         }
     }
 }

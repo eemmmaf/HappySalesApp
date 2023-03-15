@@ -6,8 +6,7 @@
 }
 
 
-<h2>@ViewData["Title"]</h2>
-
+<h1>@ViewData["Title"]</h1>
 
 <table class="table">
     <thead>
@@ -22,6 +21,7 @@
         </tr>
     </thead>
     <tbody>
+       @if(Model.Count() > 0){
         @foreach (var products in Model)
         {
             <tr>
@@ -31,7 +31,12 @@
                 <td>@products.CreatedDate</td>
                 <td>@products.LastModifiedDate</td>
                 <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="100px" height="100px" /></td>
-            </tr>
+                <td><a asp-action="Edit" asp-route-id="@products.Id">Ändra</a></td>
+                <td><a asp-action="Delete" asp-route-id="@products.Id">Ta bort</a></td>
+                </tr>
+                }
+        }else{
+        <tr><td>Du har inte skapat några annonser</td></tr>
         }
     </tbody>
 </table>
