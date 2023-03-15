@@ -7,7 +7,7 @@
 <section class="main">
 <h1>@ViewData["Title"]</h1>
 
-<div class="delete">
+<div class="section">
 <h2>Är du säker på att du vill ta bort?</h2>
     <hr />
     <dl class="row">
@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price.ToString())
+            @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImageName)
@@ -49,10 +49,9 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete">
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Ta bort" class="btn-danger" /> |
         <a asp-action="ProductsByUser">Back to List</a>
     </form>
-</div>
 </section>

@@ -1,6 +1,7 @@
 ﻿@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
 @using HappySalesApp.Areas.Identity.Pages.Account;
 @using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -32,17 +33,34 @@
             <div class="details">
                 <h3>Utgångspris</h3>
                 <p>@Html.DisplayFor(model => model.Product.Price) kr </p>
-              
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    //Skickar med produktens id som parameter i länken
-                    <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
 
-                }
-                else
-                {
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
-                }
+                <div class="add-bid">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        // Skicka med produktens ID och användarens ID till vyn
+                        ViewBag.ProductOwnerId = Model.Product.User_Id;
+                        ViewBag.CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                        // Kontrollera om inloggade användaren är också ägare till produkten
+                        if (ViewBag.CurrentUserId != ViewBag.ProductOwnerId)
+                        {
+                            //Skickar med produktens id som parameter i länken
+                            <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
+                        }
+                        else
+                        {
+
+                            <p>Detta är din Annons</p>
+                        }
+
+                    }
+                    else
+                    {
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
+                    }
+                </div>
+
+
 
                 <h2>Bud</h2>
                 <!--Kontroll om det finns något bud och skriver ut-->

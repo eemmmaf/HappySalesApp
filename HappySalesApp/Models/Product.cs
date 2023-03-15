@@ -90,10 +90,13 @@
             [Key]
             public int BidId { get; set; } // PK
 
-         
+
+            [DisplayName("Bud")]
             [Required(ErrorMessage = "Bud måste fyllas i")]
             [Range(0.01, double.MaxValue, ErrorMessage = "Budet måste vara mer än 0")]
             public decimal Amount { get; set; }
+
+            [DisplayName("Bud lagt")]
             public DateTime CreatedDate { get; set; } 
 
 
@@ -103,6 +106,8 @@
 
             //--------- FK till produkt -------//
             public int ProductId { get; set; } // FK
+
+            [DisplayName("Annons")]
             public Product? Product { get; set; } // Navigation property
         }
     }

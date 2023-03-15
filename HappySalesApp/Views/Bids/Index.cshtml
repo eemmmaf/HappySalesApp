@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Bid>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mina bud";
 }
 <section class="main">
     <h1>@ViewData["Title"]</h1>
@@ -12,10 +12,10 @@
                     @Html.DisplayNameFor(model => model.Amount)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.User)
+                    @Html.DisplayNameFor(model => model.Product)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Product)
+                    @Html.DisplayNameFor(model => model.CreatedDate)
                 </th>
                 <th></th>
             </tr>
@@ -33,15 +33,14 @@
                         @Html.DisplayFor(modelItem => item.Amount)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.User.Id)
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                               <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Product.Description)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.BidId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.BidId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.BidId">Delete</a>
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.Id">Se annons</a> |
+                        <a asp-action="Delete" asp-route-id="@item.BidId">Ta bort bud</a>
                     </td>
                 </tr>
 

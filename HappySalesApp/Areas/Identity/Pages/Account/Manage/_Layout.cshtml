@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -12,13 +12,14 @@
 
 <div class="main">
     <h1>Mina sidor</h1>
-    <h2>Ändra dina uppgifter</h2>
-    <div>
-        <div>
+    <div class="flex-mypage">
+        <div class="flexdiv">
+            <h2>Ändra dina uppgifter</h2>
             <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
             @RenderBody()
+        </div>
+        <div class="flexdiv">
+            <partial name="_Links" />
         </div>
     </div>
 </div>

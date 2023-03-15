@@ -227,10 +227,11 @@ select {
 
     .manage-ul a {
         padding: 0 12rem;
+        color: white;
     }
 
         .manage-ul a:hover {
-            color: black;
+            font-weight: bold;
         }
 
     .manage-ul li {
@@ -240,13 +241,12 @@ select {
         max-width: 500px;
         width: 100%;
         padding: 1.5rem;
-        background-color: #F4EEEE;
-        font-weight: bold;
+        background-color: #6B0037;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
 
         .manage-ul li:hover {
-            background-color: #c5c0c0;
+            background-color: #3e0120;
         }
 
 /*Ändra mail*/
@@ -391,20 +391,38 @@ select {
     width: 100%;
 }
 
+
+
 .all-ads {
     font-weight: bold;
     text-decoration: underline;
     margin-bottom: 2rem;
 }
 
-.details text{
+.add-bid {
 
 }
 
-.flex-img{
-    max-width: 500px;
-    width: 100%;
-}
+    .add-bid a {
+        color: white;
+        padding: 0 4rem;
+        background-color: #01563C;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        cursor: pointer;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+        .add-bid a:hover {
+            font-weight: bold;
+            background-color: #013728;
+        }
+
+
+    .flex-img {
+        max-width: 500px;
+        width: 100%;
+    }
 
 .details-flex {
     display: flex;
@@ -463,9 +481,9 @@ select {
     }
 
     .login-form button,
-    .login-form input[type="submit"] {
+    .login-form input[type="submit"]{
         margin: 2rem 0;
-        padding: 1rem 0;
+        padding: 1rem 0.5rem;
         font-size: 1.6rem;
         border: 1px solid white;
         width: 100%;
@@ -477,7 +495,7 @@ select {
     }
 
         .login-form button:hover,
-        .login-form input[type="submit"]:hover {
+        .login-form input[type="submit"]:hover{
             background-color: #3e0120;
         }
 
@@ -508,15 +526,30 @@ tr{
     border-bottom: 1px solid #6B0037;
 }
 
-/*Ta bort*/
-.delete {
-    max-width: 600px;
-    width: 100%;
-    margin: auto;
-    display: block;
-    font-family: 'Manrope', sans-serif;
-    font-size: 1.6rem;
+.td-delete{
+    background-color: #460101;
 }
+
+    .td-delete a{
+        color: white;
+    }
+
+    td a:hover{
+        font-weight: bold;
+    }
+
+    tr:hover{
+        background-color: #fdf8ff;
+    }
+    /*Ta bort*/
+    .delete {
+        max-width: 600px;
+        width: 100%;
+        margin: auto;
+        display: block;
+        font-family: 'Manrope', sans-serif;
+        font-size: 1.6rem;
+    }
 
 .btn-danger{
     background-color: #460101;
@@ -531,3 +564,13 @@ dd {
     margin-bottom: 1rem;
 }
 
+/*Mina sidor*/
+.flex-mypage {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flexdiv {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 2rem;
+}

@@ -84,6 +84,19 @@ namespace HappySalesApp.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Hämta annonsens ägare
+                var productOwnerId = await _context.Products
+                    .Where(p => p.Id == bid.ProductId)
+                    .Select(p => p.User_Id)
+                    .FirstOrDefaultAsync();
+
+                // Jämför produktens ägare med den inloggade användaren
+                if (productOwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                {
+                    return BadRequest("Du kan inte lägga till bud på din egen annons.");
+                }
+
                 // Lägg till produktens ID och användarens ID till budet
                 bid.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 // Kontrollera att värdet för "id" är en giltig heltalssträng
@@ -109,60 +122,7 @@ namespace HappySalesApp.Controllers
 
         }
 
-        // GET: Bids/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Bid == null)
-            {
-                return NotFound();
-            }
 
-            var bid = await _context.Bid.FindAsync(id);
-            if (bid == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", bid.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bid.UserId);
-            return View(bid);
-        }
-
-        // POST: Bids/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Amount,UserId,ProductId")] Bid bid)
-        {
-            if (id != bid.BidId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(bid);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BidExists(bid.BidId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", bid.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", bid.UserId);
-            return View(bid);
-        }
 
         // GET: Bids/Delete/5
         public async Task<IActionResult> Delete(int? id)

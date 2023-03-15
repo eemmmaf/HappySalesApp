@@ -7,33 +7,36 @@
 
 <section class="main">
     <h1>@ViewData["Title"]</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Namn</th>
-            <th>Beskrivning</th>
-            <th>Pris</th>
-            <th>Skapad</th>
-            <th>Bild</th>
-        </tr>
-    </thead>
-    <tbody>
-       @if(Model.Count() > 0){
-        @foreach (var products in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@products.Name</td>
-                <td>@products.Description</td>
-                <td>@products.Price</td>
-                <td>@products.CreatedDate</td>
-                <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="70px" height="70px" alt="@products.AltText"/></td>
-                <td><a asp-action="Edit" asp-route-id="@products.Id">Ändra</a></td>
-                <td><a asp-action="Delete" asp-route-id="@products.Id">Ta bort</a></td>
-                </tr>
+                <th>Namn</th>
+                <th>Pris</th>
+                <th>Skapad</th>
+                <th>Bild</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                @foreach (var products in Model)
+                {
+                    <tr>
+                        <td>@products.Name</td>
+                        <td>@products.Price</td>
+                        <td>@products.CreatedDate</td>
+                        <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="70px" height="70px" alt="@products.AltText" /></td>
+                        <td><a asp-action="Edit" asp-route-id="@products.Id">Ändra</a></td>
+                        <td><a asp-action="Details" asp-route-id="@products.Id">Detaljer</a></td>
+                        <td class="td-delete"><a asp-action="Delete" asp-route-id="@products.Id">Ta bort</a></td>
+                    </tr>
                 }
-        }else{
-        <tr><td>Du har inte skapat några annonser</td></tr>
-        }
-    </tbody>
-</table>
+            }
+            else
+            {
+                <tr><td>Du har inte skapat några annonser</td></tr>
+            }
+        </tbody>
+    </table>
 </section>
