@@ -7,16 +7,15 @@
 
 <div class="main">
     <h2 id="centered">Sökresultat</h2>
-    <div class="flex-index">
+    <div class="products-flex">
         @if (Model.Products.Count() > 0)
         {
-            <h3>Annonser</h3>
             foreach (var item in Model.Products)
             {
 
-                <div class="product">
+                <div>
                     <a href="@Url.Action("Details", "Products", new { id = item.Id })">
-                        <img src="@item.ImageName" alt="@item.AltText" />
+                        <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" alt="@item.AltText" />
                         <h3>@item.Name</h3>
                         <p>@item.Description</p>
                         <p>@item.Price</p>
@@ -24,24 +23,10 @@
                 </div>
             }
         }
-        else if (Model.Categories.Count() > 0)
+        else
         {
-            <h3>Kategorier</h3>
-            foreach (var item in Model.Categories)
-            {
-
-                <div class="product">
-                    <a href="@Url.Action("ProductsByCategory", "Products", new { id = item.CategoryId })">
-                        <h3>@item.CategoryName</h3>
-                    </a>
-                </div>
-            }
+            <p>Ingen annons matchade din sökning</p>
         }
-        else if (Model.Categories.Count() == 0 || Model.Products.Count() == 0)
-        {
 
-                    <p class="notfound">Inget matchade ditt sökresultat</p>
-
-        }
     </div>
 </div>

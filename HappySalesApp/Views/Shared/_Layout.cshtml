@@ -17,9 +17,9 @@
                     <a class="" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/hslogo.png" alt="" /></a>
                 </div>
                 <div class="inline-links">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul>
                         <li>
-                        <i class="fa-solid fa-couch"></i><br />
+                        <i class="fa-solid fa-couch"></i>
                             <a class="" asp-area="" asp-controller="Products" asp-action="Index">Annonser</a>
                         </li>
                         <partial name="_LoginPartial" />
@@ -34,11 +34,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-           
-        </div>
+    <footer>
+<p>HappySales - Projektuppgift - emfo2102@student.miun.se</p>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

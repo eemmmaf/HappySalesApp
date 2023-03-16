@@ -29,7 +29,7 @@
                         <td>@products.CreatedDate</td>
                         <td> <img decoding="async" src="@("~/uploadedimages/"+@products.ImageName)" asp-append-version="true" width="70px" height="70px" alt="@products.AltText" /></td>
                        @if(products.IsSold == true){
-                            <td>Såld</td>
+                            <td class="sold">Såld <i class="fa-solid fa-circle-check"></i></td>
                         }
                         else
                         {

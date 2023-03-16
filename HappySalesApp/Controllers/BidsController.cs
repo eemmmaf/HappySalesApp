@@ -166,6 +166,7 @@ namespace HappySalesApp.Controllers
 
         //Metod för att acceptera bud
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptBid(int bidId)
         {
             var bid = await _context.Bid.FindAsync(bidId);
@@ -185,6 +186,8 @@ namespace HappySalesApp.Controllers
             {
                 // Sätt IsSold till true 
                 product.IsSold = true;
+                // Uppdatera priset till värdet från det godkända budet
+                product.Price = bid.Amount;
                 await _context.SaveChangesAsync();
             }
 

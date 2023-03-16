@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
+using System.Globalization;
 
 namespace HappySalesApp
 {
@@ -12,6 +13,9 @@ namespace HappySalesApp
     {
         public static void Main(string[] args)
         {
+            //Sätter CultureInfo-klassen med koden för Sverige "sv-SE"
+            CultureInfo.CurrentCulture = new CultureInfo("sv-SE");
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.

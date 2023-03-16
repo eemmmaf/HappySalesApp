@@ -23,7 +23,7 @@
             <p>@Html.DisplayFor(model => model.Product.Description)</p>
 
 
-            <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate) och uppdaterades senast @Html.DisplayFor(model => model.Product.LastModifiedDate) </p>
+            <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate)</p>
         </div>
 
 
@@ -31,7 +31,7 @@
         <div class="details-text">
             <!--Artikel där produkterna skrivs ut-->
             <div class="details">
-                <h3>Utgångspris</h3>
+                <h3>Pris</h3>
                 <p>@Html.DisplayFor(model => model.Product.Price) kr </p>
 
                 <div class="add-bid">
@@ -42,7 +42,7 @@
                         ViewBag.CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                         // Kontrollera om inloggade användaren är också ägare till produkten
-                        if (ViewBag.CurrentUserId != ViewBag.ProductOwnerId)
+                        if (ViewBag.CurrentUserId != ViewBag.ProductOwnerId && Model.Product.IsSold == false)
                         {
                             //Skickar med produktens id som parameter i länken
                             <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
@@ -61,41 +61,45 @@
                 </div>
 
 
-
+                <section class="bids-section">
                 <h2>Bud</h2>
                 <!-- Kontroll om det finns något bud och skriver ut -->
                 <ul class="bids-list">
-                    @if (Model.Bids.Any())
+                    <!-- Kontroll om annonsen är såld -->
+                    @if (Model.Bids.Any(b => b.IsApproved))
                     {
-                        <!-- Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor -->
-                        @foreach (var bid in Model.Bids)
-                        {
-                            <!-- Kollar om annonsen har sålts -->
-                            @if (bid.IsApproved)
-                            {
-                                <li>Denna annons har blivit såld</li>
-                            }
-                            else
-                            {
-                                <!-- Skriver ut buden -->
-                                <li>@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</li>
-
-                                <!-- Om användaren är inloggad och inte är den som har lagt budet och budet inte har godkänts, visas en knapp för att godkänna budet -->
-                                @if (User.Identity.IsAuthenticated && bid.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) && bid.IsApproved == false)
-                                {
-                                    <form asp-controller="Bids" asp-action="AcceptBid" method="post">
-                                        <input type="hidden" name="bidId" value="@bid.BidId" />
-                                        <button type="submit">Godkänn</button>
-                                    </form>
-                                }
-                            }
-                        }
+                        <li class="sold">Denna annons har blivit såld <i class="fa-solid fa-circle-check"></i></li>
                     }
                     else
                     {
-                        <li>Denna produkt har inget bud</li>
+
+                        @if (Model.Bids.Any())
+                        {
+                            <!-- Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor -->
+                            @foreach (var bid in Model.Bids)
+                            {
+
+                                    <!-- Skriver ut buden -->
+                                    <li class="bid-li">@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</li>
+
+                                    <!-- Om användaren är inloggad och inte är den som har lagt budet och budet inte har godkänts, visas en knapp för att godkänna budet -->
+                                    @if (User.Identity.IsAuthenticated && bid.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) && bid.IsApproved == false)
+                                    {
+                                        <form asp-controller="Bids" asp-action="AcceptBid" method="post">
+                                            <input type="hidden" name="bidId" value="@bid.BidId" />
+                                            <button type="submit">Godkänn</button>
+                                        </form>
+                                    }
+                                }
+                            }
+               
+                        else
+                        {
+                            <li>Denna produkt har inget bud</li>
+                        }
                     }
                 </ul>
+                </section>
             </div>
         </div>
     </div>

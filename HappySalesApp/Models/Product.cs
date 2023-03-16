@@ -1,10 +1,10 @@
-﻿namespace HappySalesApp.Models
-{
-    using Microsoft.AspNetCore.Identity;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace HappySalesApp.Models
+{
     namespace HappySales.Models
     {
         public class Product
@@ -21,18 +21,13 @@
 
             [Required(ErrorMessage = "Pris måste fyllas i")]
             [Display(Name = "Pris")]
-            [DisplayFormat(DataFormatString = "{0:n2}")]
-            public decimal? Price { get; set; }
+            public int Price { get; set; }
 
 
             //------- Datum ------------//
 
             [Display(Name = "Publicerad")]
             public DateTime? CreatedDate { get; set; } = DateTime.Now;
-
-            [Display(Name = "Senast ändrad")]
-            public DateTime? LastModifiedDate { get; set; } = DateTime.Now;
-
 
 
             //-------- Bild ---------//
@@ -97,7 +92,7 @@
             [DisplayName("Bud")]
             [Required(ErrorMessage = "Bud måste fyllas i")]
             [Range(0.01, double.MaxValue, ErrorMessage = "Budet måste vara mer än 0")]
-            public decimal Amount { get; set; }
+            public int Amount { get; set; }
 
             [DisplayName("Bud lagt")]
             public DateTime CreatedDate { get; set; } 

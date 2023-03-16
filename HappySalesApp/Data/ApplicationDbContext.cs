@@ -17,7 +17,7 @@ namespace HappySalesApp.Data
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Bid> Bid { get; set; }
-        public IEnumerable Category { get; internal set; }
+        public IEnumerable? Category { get; internal set; }
 
     }
 }

@@ -13,6 +13,10 @@ body {
     padding: 0;
 }
 
+main{
+    min-height: 100vh;
+}
+
 p {
     font-family: 'Manrope', sans-serif;
     color: #2F2727;
@@ -396,12 +400,26 @@ select {
     padding-left: 0;
 }
 
+.bid-li{
+    margin-bottom: 3rem;
+    border-bottom: 1px solid #6B0037;
+}
+
+.bids-section {
+    margin-top: 5rem;
+    padding: 1rem;
+    border: 2px solid #6B0037;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+
+
 
 
 .all-ads {
     font-weight: bold;
     text-decoration: underline;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .add-bid {
@@ -479,7 +497,8 @@ select {
 
     .login-form input[type="email"],
     .login-form input[type="password"],
-    .login-form input[type="text"] {
+    .login-form input[type="text"],
+    .login-form input[type="number"] {
         width: 100%;
         padding: 0.5rem;
     }
@@ -530,6 +549,10 @@ tr {
     border-bottom: 1px solid #6B0037;
 }
 
+td {
+    padding: 2rem;
+}
+
 .td-delete {
     background-color: #460101;
 }
@@ -576,5 +599,18 @@ dd {
 
 .flexdiv {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 2rem;
+}
+
+.sold i{
+    background-color: white;
+    color: #01563C;
+}
+
+
+footer{
+    margin-top: 5rem;
+    text-align: center;
+    background-color: #F4EEEE;
     padding: 2rem;
 }

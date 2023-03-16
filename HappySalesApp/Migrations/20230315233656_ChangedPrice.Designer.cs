@@ -3,6 +3,7 @@ using System;
 using HappySalesApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappySalesApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230315233656_ChangedPrice")]
+    partial class ChangedPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,6 +94,9 @@ namespace HappySalesApp.Migrations
 
                     b.Property<bool>("IsSold")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .IsRequired()

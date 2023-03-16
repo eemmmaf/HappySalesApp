@@ -32,7 +32,7 @@ namespace HappySalesApp.Controllers
                         Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
         }
 
-        public async Task<IActionResult> Search(string searchTerm, string searchType)
+        public async Task<IActionResult> Search(string searchTerm)
         {
 
             var viewModel = new ProductsAndCategoriesViewModel
@@ -42,29 +42,16 @@ namespace HappySalesApp.Controllers
             };
 
 
-            if (string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                viewModel.Products = await _context.Products.ToListAsync();
-                viewModel.Categories = await _context.Categories.ToListAsync();
-            }
 
-            else if (searchType == "Products")
-            {
+
                 viewModel.Products = await _context.Products
                     .Where(p => p.Name.Contains(searchTerm))
                     .ToListAsync();
-            }
 
-            else if (searchType == "Categories")
-            {
-                viewModel.Categories = await _context.Categories
-                    .Where(c => c.CategoryName.Contains(searchTerm))
-                    .ToListAsync();
-
-                viewModel.Products = await _context.Products
-                    .Where(p => p.Category.CategoryName.Contains(searchTerm))
-                    .ToListAsync();
             }
+            
 
             return View("Search", viewModel);
         }

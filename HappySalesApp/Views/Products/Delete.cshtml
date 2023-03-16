@@ -7,51 +7,50 @@
 <section class="main">
 <h1>@ViewData["Title"]</h1>
 
-<div class="section">
+    <div class="delete">
 <h2>Är du säker på att du vill ta bort?</h2>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+
+        <h3>
             @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
+        </p>
+        <h3>
             @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
+        </p>
+        <h3>
             @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
+        </p>
+        <h3>
             @Html.DisplayNameFor(model => model.ImageName)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.ImageName)
-        </dd>
-        <dt class = "col-sm-2">
+        </p>
+        <h3>
             @Html.DisplayNameFor(model => model.AltText)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.AltText)
-        </dd>
-        <dt class = "col-sm-2">
+        </p>
+        <h3>
             @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
+        </h3>
+        <p>
             @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-    </dl>
+        </p>
 
         <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Ta bort" class="btn-danger" /> |
         <a asp-action="ProductsByUser">Back to List</a>
     </form>
+    </div>
 </section>
