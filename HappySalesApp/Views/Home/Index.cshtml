@@ -5,20 +5,21 @@
 }
 
 <!--Sektion med ett kontaktformulär-->
-<section class="dark-main">
+<div class="dark-main">
     <form method="post" action="@Url.Action("Search", "Home")">
+        @Html.AntiForgeryToken()
         <label for="searchinfo">Vad söker du?</label>
-        <br /><br />
+        <br><br>
         <div class="form-flex">
             <div class="div-form">
-                <input type="text" name="searchTerm" id="searchinfo" />
+                <input type="text" name="searchTerm" id="searchinfo">
             </div>
         
-                <input type="submit" value="Sök" />
+                <input type="submit" value="Sök">
   
         </div>
     </form>
-</section>
+</div>
 
 <div class="main">
     <h2 id="centered">Kategorier</h2>

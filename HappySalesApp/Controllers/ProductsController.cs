@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Drawing;
-using LazZiya.ImageResize;
 using HappySalesApp.ViewModels;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -28,9 +27,6 @@ namespace HappySalesApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        //Thumbnails
-        private readonly int ThumbNailWidth = 350;
-        private readonly int ThumbNailHeight = 350;
 
         public ProductsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IWebHostEnvironment hostEnvironment)
         {
@@ -43,9 +39,6 @@ namespace HappySalesApp.Controllers
         // GET: Products
         public async Task<IActionResult> Index(string sortOrder)
         {
-
-
-
             var categories = await _context.Categories.ToListAsync();
             //Dictionary som räknar antalet produkter per kategori
             var productCounts = new Dictionary<Category, int>();
@@ -57,6 +50,7 @@ namespace HappySalesApp.Controllers
             }
 
 
+            //Viewbags för sortering
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
@@ -155,7 +149,9 @@ namespace HappySalesApp.Controllers
             ViewBag.CategoryName = category.CategoryName;
             ViewBag.CategoryDescription = category.CategoryDescription;
 
+            //Hämtar alla produkter som matchar med kategorins id
             var products = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
+            //Hämtar alla kategorier från databasen
             var categories = await _context.Categories.ToListAsync();
 
             //Dictionary som räknar antalet produkter per kategori
@@ -167,7 +163,7 @@ namespace HappySalesApp.Controllers
                 productCounts.Add(categoryItem, count);
             }
 
-
+            //Sortering
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSort = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
@@ -251,9 +247,6 @@ namespace HappySalesApp.Controllers
                     //Lagrar filen
                     using var fileStream = new FileStream(path, FileMode.Create);
                     await product.ImageFile.CopyToAsync(fileStream);
-
-                    //Skapar miniatyr
-                    //CreateImages(fileName);
                 }
 
 
@@ -338,9 +331,6 @@ namespace HappySalesApp.Controllers
                         //Lagrar filen
                         using var fileStream = new FileStream(path, FileMode.Create);
                         await product.ImageFile.CopyToAsync(fileStream);
-
-                        //Skapar miniatyr
-                        //CreateImages(fileName);
                     }
 
                     // Hämta den inloggade användarens Id och lagrar
@@ -440,13 +430,5 @@ namespace HappySalesApp.Controllers
             return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        //Skapar miniatyr av bild
-        private void CreateImages(string filename)
-        {
-            //Definierar wwwRootPath
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            using var img = System.Drawing.Image.FromFile(Path.Combine(wwwRootPath + "/uploadedimages/", filename));
-            img.Scale(ThumbNailWidth, ThumbNailHeight).SaveAs(Path.Combine(wwwRootPath + "/smallimages/", "thumb_" + filename));
-        }
     }
 }

@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - HappySales</title>
-     <script src="https://kit.fontawesome.com/2090b52781.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/2090b52781.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
     <!--<link rel="stylesheet" href="~/HappySales.styles.css" asp-append-version="true" />-->
 </head>
 <body>
@@ -14,16 +14,35 @@
             <div class="flex-menu">
                 <!--Flexbox för menyn där logga hamnar till vänster-->
                 <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/hslogo.png" alt="" /></a>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/hslogo.png" alt=""></a>
                 </div>
-                <div class="inline-links">
-                    <ul>
-                        <li>
-                        <i class="fa-solid fa-couch"></i>
-                            <a class="" asp-area="" asp-controller="Products" asp-action="Index">Annonser</a>
-                        </li>
-                        <partial name="_LoginPartial" />
-                    </ul>
+                <!--Länkarna för desktop-->
+                <div class="desktop-nav">
+                    <div class="inline-links">
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-couch"></i>
+                                <a class="" asp-area="" asp-controller="Products" asp-action="Index">Annonser</a>
+                            </li>
+                                <li>
+                                <i class="fa-solid fa-circle-question"></i>
+                                <a class="" asp-area="" asp-controller="Home" asp-action="About">Om Happy Sales</a>
+                            </li>
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div>
+                </div>
+
+                <!--Länkarna för mobil-->
+                <div class="hamburger-menu">
+                    <button class="hamburger-icon" id="hamburger-icon"><i class="fas fa-bars"></i></button>
+                    <ul class="nav-ul" id="nav-ul">
+                            <li>
+                                <i class="fa-solid fa-couch"></i>
+                                <a class="" asp-area="" asp-controller="Products" asp-action="Index">Annonser</a>
+                            </li>
+                            <partial name="_LoginPartial" />
+                        </ul>
                 </div>
             </div>
         </nav>
@@ -35,7 +54,7 @@
     </div>
 
     <footer>
-<p>HappySales - Projektuppgift - emfo2102@student.miun.se</p>
+        <p>HappySales - Projektuppgift - emfo2102@student.miun.se</p>
     </footer>
 
 

@@ -1,4 +1,4 @@
-﻿@model HappySalesApp.ViewModels.ProductsAndCategoriesViewModel
+﻿@model IEnumerable<HappySalesApp.Models.HappySales.Models.Product>
 
 @{
     ViewData["Title"] = "Sökresultat";
@@ -8,17 +8,16 @@
 <div class="main">
     <h2 id="centered">Sökresultat</h2>
     <div class="products-flex">
-        @if (Model.Products.Count() > 0)
+        @if (Model.Count() > 0)
         {
-            foreach (var item in Model.Products)
+            foreach (var item in Model)
             {
 
                 <div>
                     <a href="@Url.Action("Details", "Products", new { id = item.Id })">
-                        <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" alt="@item.AltText" />
+                        <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230" height="230" alt="@item.AltText">
                         <h3>@item.Name</h3>
-                        <p>@item.Description</p>
-                        <p>@item.Price</p>
+                        <p>@item.Price kr</p>
                     </a>
                 </div>
             }

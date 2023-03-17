@@ -15,21 +15,18 @@
         <a asp-action="Index">Tillbaka till alla annonser</a>
     </div>
 
-    <!--Flexbos med kategorier och produktlistning-->
+    <!--Info om annons-->
     <div class="details-flex">
         <div class="flex-img">
-            <img decoding="async" src="@("~/uploadedimages/"+Model.Product.ImageName)" asp-append-version="true" width="450" height="450" alt="@Model.Product.AltText" />
+            <img decoding="async" src="@("~/uploadedimages/"+Model.Product.ImageName)" asp-append-version="true" width="450" height="450" alt="@Model.Product.AltText">
             <h2>@Html.DisplayFor(model => model.Product.Name)</h2>
             <p>@Html.DisplayFor(model => model.Product.Description)</p>
-
-
             <p>Annonsen skapades: @Html.DisplayFor(model => model.Product.CreatedDate)</p>
         </div>
 
 
-
+        <!--Här skrivs pris och bud ut-->
         <div class="details-text">
-            <!--Artikel där produkterna skrivs ut-->
             <div class="details">
                 <h3>Pris</h3>
                 <p>@Html.DisplayFor(model => model.Product.Price) kr </p>
@@ -37,47 +34,53 @@
                 <div class="add-bid">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        // Skicka med produktens ID och användarens ID till vyn
+                        //produktens ID och användarens ID till vyn
                         ViewBag.ProductOwnerId = Model.Product.User_Id;
                         ViewBag.CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                         // Kontrollera om inloggade användaren är också ägare till produkten
-                        if (ViewBag.CurrentUserId != ViewBag.ProductOwnerId && Model.Product.IsSold == false)
+                        if (ViewBag.CurrentUserId != ViewBag.ProductOwnerId && !Model.Product.IsSold)
                         {
                             //Skickar med produktens id som parameter i länken
                             <a href="@Url.Action("Create", "Bids", new { id = Model.Product.Id })">Lägg ett bud</a>
                         }
+                        else if (Model.Product.IsSold == true)
+                        {
+                            <p>Produkten är såld</p>
+                        }
                         else
                         {
-
                             <p>Detta är din Annons</p>
                         }
-
                     }
                     else
                     {
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
+                        // Kontrollera om varan är såld eller inte
+                        if (Model.Product.IsSold == false)
+                        {
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in för att lägga ett bud</a>
+                        }
                     }
                 </div>
 
 
                 <section class="bids-section">
-                <h2>Bud</h2>
-                <!-- Kontroll om det finns något bud och skriver ut -->
-                <ul class="bids-list">
-                    <!-- Kontroll om annonsen är såld -->
-                    @if (Model.Bids.Any(b => b.IsApproved))
-                    {
-                        <li class="sold">Denna annons har blivit såld <i class="fa-solid fa-circle-check"></i></li>
-                    }
-                    else
-                    {
-
-                        @if (Model.Bids.Any())
+                    <h2>Bud</h2>
+                    <!-- Kontroll om det finns något bud och skriver ut -->
+                    <ul class="bids-list">
+                        <!-- Kontroll om annonsen är såld -->
+                        @if (Model.Bids.Any(b => b.IsApproved))
                         {
-                            <!-- Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor -->
-                            @foreach (var bid in Model.Bids)
+                            <li class="sold">Denna annons har blivit såld <i class="fa-solid fa-circle-check"></i></li>
+                        }
+                        else
+                        {
+
+                            @if (Model.Bids.Any())
                             {
+                                <!-- Loopar igenom buden och skriver ut. Formatterar om utskrift av "Amount" och tar bort extra nollor -->
+                                @foreach (var bid in Model.Bids)
+                                {
 
                                     <!-- Skriver ut buden -->
                                     <li class="bid-li">@String.Format("{0:N2}", bid.Amount) kr | @bid.CreatedDate</li>
@@ -86,19 +89,19 @@
                                     @if (User.Identity.IsAuthenticated && bid.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier) && bid.IsApproved == false)
                                     {
                                         <form asp-controller="Bids" asp-action="AcceptBid" method="post">
-                                            <input type="hidden" name="bidId" value="@bid.BidId" />
-                                            <button type="submit">Godkänn</button>
+                                            <input type="hidden" name="bidId" value="@bid.BidId">
+                                            <button class="bids-button" type="submit">Godkänn</button>
                                         </form>
                                     }
                                 }
                             }
-               
-                        else
-                        {
-                            <li>Denna produkt har inget bud</li>
+
+                            else
+                            {
+                                <li>Denna produkt har inget bud</li>
+                            }
                         }
-                    }
-                </ul>
+                    </ul>
                 </section>
             </div>
         </div>

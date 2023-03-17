@@ -32,28 +32,28 @@ namespace HappySalesApp.Controllers
                         Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
         }
 
+        //Om sidan
+        public IActionResult About()
+        {
+            return View();
+        }
+
+
+        //Metod för sökning
         public async Task<IActionResult> Search(string searchTerm)
         {
 
-            var viewModel = new ProductsAndCategoriesViewModel
-            {
-                Products = await _context.Products.ToListAsync(),
-                Categories = await _context.Categories.ToListAsync()
-            };
+            var products = await _context.Products.ToListAsync();
 
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-
-
-                viewModel.Products = await _context.Products
+                products = await _context.Products
                     .Where(p => p.Name.Contains(searchTerm))
                     .ToListAsync();
-
             }
-            
 
-            return View("Search", viewModel);
+            return View("Search", products);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

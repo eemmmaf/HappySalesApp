@@ -70,6 +70,7 @@ label {
     max-width: 1400px;
     width: 100%;
     margin: auto;
+    padding: 1rem;
 }
 
 img {
@@ -214,7 +215,9 @@ select {
     }
 
     .flex-index div:hover,
-    .sorting-list li:hover {
+    .sorting-list li:hover,
+    .dark-main input[type="submit"]:hover,
+    .logout-btn:hover {
         background-color: #3e0120;
         font-weight: bold;
     }
@@ -401,16 +404,28 @@ select {
 }
 
 .bid-li{
-    margin-bottom: 3rem;
     border-bottom: 1px solid #6B0037;
 }
 
-.bids-section {
-    margin-top: 5rem;
-    padding: 1rem;
-    border: 2px solid #6B0037;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+.bids-button {
+    max-width: 500px;
+    width: 100%;
+    color: white;
+    padding: 0 1rem;
+    background-color: #01563C;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    cursor: pointer;
+    text-align: center;
+    padding: 1.5rem;
+    margin-bottom: 4rem;
 }
+
+    .bids-section {
+        margin-top: 5rem;
+        padding: 1rem;
+        border: 2px solid #6B0037;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
 
 
 
@@ -435,7 +450,8 @@ select {
         padding: 1.5rem;
     }
 
-        .add-bid a:hover {
+        .add-bid a:hover,
+        .bids-button:hover{
             font-weight: bold;
             background-color: #013728;
         }
@@ -568,9 +584,13 @@ td a:hover {
 tr:hover {
     background-color: #fdf8ff;
 }
+
+.scroll{
+    overflow-x: auto;
+}
 /*Ta bort*/
 .delete {
-    max-width: 600px;
+    max-width: 400px;
     width: 100%;
     margin: auto;
     display: block;
@@ -579,8 +599,18 @@ tr:hover {
 }
 
 .btn-danger {
-    background-color: #460101;
     color: white;
+    margin: 2rem 0;
+    padding: 1rem 0.5rem;
+    font-size: 1.6rem;
+    border: 1px solid white;
+    max-width: 200px;
+    width: 100%;
+    color: white;
+    border-radius: 5px;
+    background-color: #6B0037;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    cursor: pointer;
 }
 
 dt {
@@ -595,12 +625,19 @@ dd {
 .flex-mypage {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
-.flexdiv {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    padding: 2rem;
-}
+    .flex-mypage div{
+        margin-top: 3rem;
+    }
+
+    .flexdiv {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 100%;
+    }
 
 .sold i{
     background-color: white;
@@ -613,4 +650,133 @@ footer{
     text-align: center;
     background-color: #F4EEEE;
     padding: 2rem;
+}
+
+
+#menu-toggle {
+    display: none;
+}
+
+.desktop-nav{
+    display: block;
+}
+
+.about{
+    max-width: 650px;
+    width: 100%;
+    margin: auto;
+}
+
+/*Gömmer hamburger-menyn för desktop*/
+.hamburger-menu {
+    display: none;
+}
+
+
+
+@media all and (max-width: 800px) {
+    #menu {
+        display: none;
+    }
+
+    #menu-toggle {
+        display: block;
+    }
+
+    .desktop-nav{
+        display: none;
+    }
+
+    .flex-container article{
+        max-width: 180px;
+        width: 100%;
+    }
+
+    /*Länkarna när dom syns*/
+    .nav-ul.show {
+        display: block;
+    }
+
+    .hamburger-menu {
+        display: block;
+        background-color: transparent;
+        position: absolute;
+        background-color: #F4EEEE;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        max-width: 200px;
+        width: 100%;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .nav-ul {
+        display: none;
+        padding-left: 0;
+        list-style-type: none;
+        position: relative;
+        top: 2rem;
+        margin-top: 4rem;
+    }
+
+    nav li {
+        border-bottom: 2px solid #6B0037;
+        padding: 6%;
+        text-align: center;
+        display: block;
+        margin-bottom: 4rem;
+    }
+
+    .hamburger-icon {
+        background-color: transparent;
+        border: none;
+        font-size: 3rem;
+        cursor: pointer;
+        display: block;
+        color: black;
+        margin-top: 1rem;
+        position: absolute;
+        right: 2.5rem;
+    }
+
+    .hamburger-menu li i{
+        display: none;
+    }
+}
+
+/*Media Quiries*/
+@media all and (max-width: 680px) {
+    .flex-index div {
+        max-width: 680px;
+        width: 100%;
+    }
+
+    .form-flex {
+        flex-direction: column;
+    }
+
+    .dark-main input[type="submit"] {
+        margin: 1rem 0;
+    }
+
+    .manage-ul a {
+        padding: 0 1rem;
+    }
+
+    td {
+        padding: 1rem;
+    }
+
+    .div-form {
+        width: 100%;
+    }
+
+
+    .dark-main label {
+        font-size: 2.6rem;
+    }
+
+    .dark-main {
+        padding: 5rem 3rem;
+    }
 }

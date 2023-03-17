@@ -4,13 +4,14 @@
     ViewData["Title"] = "Ta bort bud";
 }
 
+<div class="main">
 <div class="delete">
     <h1>@ViewData["Title"]</h1>
         <h3>
             @Html.DisplayNameFor(model => model.Amount)
        </h3>
        <p>
-            @Html.DisplayFor(model => model.Amount)
+            @Html.DisplayFor(model => model.Amount) kr
         </p>
 
         <h3>
@@ -20,9 +21,12 @@
             @Html.DisplayFor(model => model.Product.Description)
     </p>
     
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="BidId" />
-        <input type="submit" value="Ta bort" class="btn btn-danger" /> |
+        <input type="submit" value="Ta bort" class="btn-danger">
+        <br>
         <a asp-action="Index">Tillbaka till buden</a>
     </form>
+    </div>
 </div>

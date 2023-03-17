@@ -5,47 +5,51 @@
 }
 <section class="main">
     <h1>@ViewData["Title"]</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Amount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedDate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!Model.Any())
-            {
-                <tr><td>Du har inte lagt några bud ännu</td></tr>
-            }else{
-                <!--Loopar igenom-->
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
-                    </td>
-                               <td>
-                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                    </td>
-                    <td>
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.Id">Se annons</a> |
-                        <a asp-action="Delete" asp-route-id="@item.BidId">Ta bort bud</a>
-                    </td>
+    <div class="scroll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </th>
+                    <th></th>
                 </tr>
-
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr><td>Du har inte lagt några bud ännu</td></tr>
                 }
-            }
-        </tbody>
-    </table>
+                else
+                {
+                    <!--Loopar igenom-->
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.Id">Se annons</a> |
+                                <a asp-action="Delete" asp-route-id="@item.BidId">Ta bort bud</a>
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </section>

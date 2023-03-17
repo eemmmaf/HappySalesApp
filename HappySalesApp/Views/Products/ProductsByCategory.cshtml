@@ -78,7 +78,7 @@
                         <div>
                             <article class="products">
                                 <a asp-action="Details" asp-route-id="@item.Id">
-                                    <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230" height="230" alt="@item.AltText" />
+                                    <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230" height="230" alt="@item.AltText">
 
                                     <h3>
                                         @Html.DisplayFor(modelItem => item.Name)

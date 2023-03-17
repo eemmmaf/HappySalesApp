@@ -26,6 +26,7 @@ namespace HappySalesApp.Controllers
         }
 
         // GET: Bids
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             // Hämta den inloggade användarens Id
@@ -42,6 +43,7 @@ namespace HappySalesApp.Controllers
         }
 
         // GET: Bids/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bid == null)
@@ -53,6 +55,7 @@ namespace HappySalesApp.Controllers
                 .Include(b => b.Product)
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.BidId == id);
+
             if (bid == null)
             {
                 return NotFound();
@@ -62,12 +65,13 @@ namespace HappySalesApp.Controllers
         }
 
         // GET: Bids/Create
+        [Authorize]
         public IActionResult Create(int? id)
         {
-            // Här kan du hämta användarens ID från din autentiseringslogik
+            // Hämtar användarens ID
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Sätt ViewBag med användarens ID och produktens ID
+            //ViewBag med användarens ID och produktens ID
             ViewBag.UserId = userId;
             ViewBag.ProductId = id;
 
@@ -99,17 +103,19 @@ namespace HappySalesApp.Controllers
 
                 // Lägg till produktens ID och användarens ID till budet
                 bid.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                // Kontrollera att värdet för "id" är en giltig heltalssträng
+
+
+                // Kontrollera att id är en INT
                 if (int.TryParse(Request.Form["ProductId"], out int productId))
                 {
-                    // Tilldela produkt-ID:t till budet
+                    // Tilldela produktens id
                     bid.ProductId = productId;
                 }
 
                 // Sätt CreatedDate till nuvarande tidpunkt
                 bid.CreatedDate = DateTime.Now;
 
-                // Lägg till budet i databasen och redirectar tillbaka användaren
+                // Lägg till budet i databasen och redirectar tillbaka
                 _context.Add(bid);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Products", new { id = bid.ProductId });
@@ -125,6 +131,7 @@ namespace HappySalesApp.Controllers
 
 
         // GET: Bids/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Bid == null)
@@ -147,6 +154,7 @@ namespace HappySalesApp.Controllers
         // POST: Bids/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Bid == null)
@@ -167,17 +175,22 @@ namespace HappySalesApp.Controllers
         //Metod för att acceptera bud
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> AcceptBid(int bidId)
         {
+            //Hämtar bud utifrån id
             var bid = await _context.Bid.FindAsync(bidId);
+
             if (bid == null)
             {
                 return NotFound();
             }
 
+            //Sätter IsApproved till true om budet accepteras
             bid.IsApproved = true;
             await _context.SaveChangesAsync();
 
+            //Produktens id
             var productId = bid.ProductId;
 
             // Hämta produkten som är kopplad till budet
@@ -192,7 +205,7 @@ namespace HappySalesApp.Controllers
             }
 
             // Redirectar till produkt-sidan
-            return RedirectToAction("Details", "Products", new { id = product.Id });
+            return RedirectToAction("Details", "Products", new { id = product?.Id });
         }
 
 

@@ -12,19 +12,20 @@
 <h1>Lägg ett bud</h1>
 
 <form asp-controller="Bids" asp-action="Create" class="login-form">
+        @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="form-group">
         <label asp-for="Amount" class="control-label">Bud:</label>
-        <input asp-for="Amount" class="form-control" />
+        <input asp-for="Amount" class="form-control">
         <span asp-validation-for="Amount" class="text-danger"></span>
     </div>
 
-    <input type="hidden" name="UserId" value="@ViewBag.UserId" />
-    <input type="hidden" name="ProductId" value="@ViewBag.ProductId" />
+    <input type="hidden" name="UserId" value="@ViewBag.UserId">
+    <input type="hidden" name="ProductId" value="@ViewBag.ProductId">
 
     <div class="form-group">
-        <input type="submit" value="Spara bud" class="btn btn-primary" />
+        <input type="submit" value="Spara bud" class="btn btn-primary">
     </div>
 </form>
 </div>

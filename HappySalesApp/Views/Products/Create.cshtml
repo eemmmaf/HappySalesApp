@@ -8,53 +8,56 @@
 <h1>@ViewData["Title"]</h1>
 
         <form asp-action="Create" enctype="multipart/form-data" class="login-form">
+        @Html.AntiForgeryToken()
             
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label><br />
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label"></label><br>
+                <input asp-for="Name" class="form-control">
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label><br />
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label"></label><br>
+                <input asp-for="Description" class="form-control">
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label><br />
-                <input asp-for="Price" class="form-control" />
+                <label asp-for="Price" class="control-label"></label><br>
+                <input asp-for="Price" class="form-control">
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
             <!--Selectlist med kategorier-->
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label><br />
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <label asp-for="CategoryId" class="control-label"></label><br>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
 
             <!--Ladda upp fil-->
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" accept="image/*" /><br />
+                <input asp-for="ImageFile" accept="image/*"><br>
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="AltText" class="control-label"></label><br />
-                <input asp-for="AltText" class="form-control" />
+                <label asp-for="AltText" class="control-label"></label><br>
+                <input asp-for="AltText" class="form-control">
                 <span asp-validation-for="AltText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Spara" class="btn btn-primary" />
+                <input type="submit" value="Spara" class="btn btn-primary">
             </div>
         </form>
+
+
+    <div>
+        <a asp-action="Index">Tillbaka till alla annonser</a>
+    </div>
     </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

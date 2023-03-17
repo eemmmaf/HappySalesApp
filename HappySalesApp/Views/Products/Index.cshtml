@@ -21,8 +21,9 @@
     }
 
     <!--Flexbos med kategorier och produktlistning-->
+    <button id="menu-toggle" class="login-form">Filtrera annonser</button>
     <div class="flex-container">
-        <div class="flex-nav">
+        <div class="flex-nav" id="menu">
             <h2>Sortera</h2>
             @* Länkar för att ändra sorteringen *@
             <ul class="sorting-list">
@@ -67,7 +68,7 @@
                     <div>
                         <article class="products">
                             <a asp-action="Details" asp-route-id="@item.Id">
-                                <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230px" height="230px" alt="@item.AltText" />
+                                <img decoding="async" src="@("~/uploadedimages/"+item.ImageName)" asp-append-version="true" width="230" height="230" alt="@item.AltText">
 
                                 <h3>
                                     @Html.DisplayFor(modelItem => item.Name)
