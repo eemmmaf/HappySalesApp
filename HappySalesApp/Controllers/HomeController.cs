@@ -45,7 +45,7 @@ namespace HappySalesApp.Controllers
 
             var products = await _context.Products.ToListAsync();
 
-
+            //Kontroll om searchTerm innehåller någon sökning och hämtar annonser utifrån sökningen
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 products = await _context.Products
@@ -53,6 +53,7 @@ namespace HappySalesApp.Controllers
                     .ToListAsync();
             }
 
+            //Returnerar vyn Search och sökresultatet
             return View("Search", products);
         }
 

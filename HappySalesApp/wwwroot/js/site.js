@@ -37,3 +37,17 @@ function hamburgerMenu() {
         navUl.classList.toggle("show");
     })
 }
+
+//Funktion för att visa och dölja menyn för productsbycategory
+const menuToggle2 = document.getElementById('menu-toggle2');
+const menu2 = document.getElementById('menu2');
+
+if (menuToggle2) {
+    menuToggle2.addEventListener('click', function () {
+        if (menu2.style.display === 'none') {
+            menu2.style.display = 'block';
+        } else {
+            menu2.style.display = 'none';
+        }
+    })
+};

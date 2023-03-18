@@ -22,8 +22,9 @@
     </section>
 
     <!--Flexbox med kategorier och produktlistning-->
+    <button id="menu-toggle2" class="login-form">Filtrera annonser</button>
     <div class="flex-container">
-        <div class="flex-nav">
+        <div class="flex-nav" id="menu2">
             <h2>Sortera</h2>
             @* Länkar för att ändra sorteringen *@
             <ul class="sorting-list">
@@ -87,6 +88,13 @@
                                     <p>
                                         @Html.DisplayFor(modelItem => item.Price) kr
                                     </p>
+
+
+                                    <!--Kontroll om varan är såld och skriver isåfall ut det-->
+                                    @if (item.IsSold == true)
+                                    {
+                                        <p>Såld <i class="fa-solid fa-circle-check"></i></p>
+                                    }
                                 </a>
                             </article>
                         </div>

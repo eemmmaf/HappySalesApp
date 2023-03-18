@@ -315,6 +315,7 @@ select {
     .products-flex div {
         margin-bottom: 3rem;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        align-self: baseline;
     }
 
     .products-flex h2 {
@@ -347,6 +348,11 @@ select {
     max-width: 230px;
     width: 100%;
 }
+
+    .products p,
+    .products h3 {
+        padding: 0.5rem;
+    }
 
     .products:hover {
         text-decoration: underline;
@@ -639,7 +645,8 @@ dd {
         width: 100%;
     }
 
-.sold i{
+.sold i,
+.products i{
     background-color: white;
     color: #01563C;
 }
@@ -653,7 +660,8 @@ footer{
 }
 
 
-#menu-toggle {
+#menu-toggle,
+#menu-toggle2 {
     display: none;
 }
 
@@ -675,11 +683,13 @@ footer{
 
 
 @media all and (max-width: 800px) {
-    #menu {
+    #menu,
+    #menu2 {
         display: none;
     }
 
-    #menu-toggle {
+    #menu-toggle,
+    #menu-toggle2 {
         display: block;
     }
 

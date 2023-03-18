@@ -77,6 +77,13 @@
                                 <p>
                                     @Html.DisplayFor(modelItem => item.Price) kr
                                 </p>
+
+                                <!--Kontroll om varan är såld och skriver isåfall ut det-->
+                                @if(item.IsSold == true)
+                                    {
+                                    <p>Såld <i class="fa-solid fa-circle-check"></i></p>
+                                    }
+                                
                             </a>
                         </article>
                     </div>

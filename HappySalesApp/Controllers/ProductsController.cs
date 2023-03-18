@@ -37,6 +37,7 @@ namespace HappySalesApp.Controllers
 
 
         // GET: Products
+        [Route("/annonser")]
         public async Task<IActionResult> Index(string sortOrder)
         {
             var categories = await _context.Categories.ToListAsync();

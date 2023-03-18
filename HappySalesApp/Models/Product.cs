@@ -48,6 +48,7 @@ namespace HappySalesApp.Models
             //---------FK Kategori------------//
             [DisplayName("Kategori")]
             public int CategoryId { get; set; }
+            [Display(Name = "Kategori")]
             public Category? Category { get; set; }
 
 
@@ -74,6 +75,7 @@ namespace HappySalesApp.Models
         {
             //PK
             public int CategoryId { get; set; }
+            [Display(Name = "Kategorins namn")]
             public string? CategoryName { get; set; }
             public string? CategoryDescription { get; set; }
 
